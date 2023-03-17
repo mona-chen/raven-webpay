@@ -944,10 +944,10 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.13.1"
 
-"raven-bank-ui@^0.7.6":
-  "integrity" "sha512-/F5n8trtkovUrkOVybZd4ccITPYDFP4Y11ZYJIzKI64Qo6pKxAV3f1eJcZY6WoG1qKrXpUWxVetMfnbfq4ik7g=="
-  "resolved" "https://registry.npmjs.org/raven-bank-ui/-/raven-bank-ui-0.7.6.tgz"
-  "version" "0.7.6"
+"raven-bank-ui@^0.7.8":
+  "integrity" "sha512-AfZsqrucOfgHQj0zt08K58x9UQh01xjB71pvThFR09b/7jsuL+aAihyfVt1dhaM3aWa3UtcJ1cmzHSTQ966YNw=="
+  "resolved" "https://registry.npmjs.org/raven-bank-ui/-/raven-bank-ui-0.7.8.tgz"
+  "version" "0.7.8"
   dependencies:
     "react-countdown" "^2.3.5"
     "react-drag-drop-files" "^2.3.9"
