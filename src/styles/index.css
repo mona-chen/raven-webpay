@@ -1,0 +1,163 @@
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_extra_light_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_extra_light_italic-webfont.woff") format("woff");
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_extra_light-webfont.woff2") format("woff2"), url("./fonts/br_firma_extra_light-webfont.woff") format("woff");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_light_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_light_italic-webfont.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_light-webfont.woff2") format("woff2"), url("./fonts/br_firma_light-webfont.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_medium_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_medium_italic-webfont.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_medium-webfont.woff2") format("woff2"), url("./fonts/br_firma_medium-webfont.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_regular_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_regular_italic-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_regular-webfont.woff2") format("woff2"), url("./fonts/br_firma_regular-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_semibold_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_semibold_italic-webfont.woff") format("woff");
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_semibold-webfont.woff2") format("woff2"), url("./fonts/br_firma_semibold-webfont.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_thin_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_thin_italic-webfont.woff") format("woff");
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_thin-webfont.woff2") format("woff2"), url("./fonts/br_firma_thin-webfont.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_black_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_black_italic-webfont.woff") format("woff");
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_black-webfont.woff2") format("woff2"), url("./fonts/br_firma_black-webfont.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_bold_italic-webfont.woff2") format("woff2"), url("./fonts/br_firma_bold_italic-webfont.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: "br_firma";
+  src: url("./fonts/br_firma_bold-webfont.woff2") format("woff2"), url("./fonts/br_firma_bold-webfont.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+:root {
+  --base-white: #ffffff;
+  --base-black: #020202;
+  --base-background-white: #f9f9f9;
+  --base-background-black: #676767;
+  --border-green: #0b8376;
+  --border-grey-dark: #676767;
+  --border-grey-light: #cccccc;
+  --border-light: #f7f8f7;
+  --primary-green: #0b8376;
+  --primary-deep-green: #014345;
+  --primary-blue: #476885;
+  --primary-orange: #ea872d;
+  --primary-purple: #755ae2;
+  --primary-black: #020202;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+@media only screen and (max-width: 75em) {
+  html {
+    font-size: 55%;
+  }
+}
+
+body {
+  font-size: 1.4rem;
+  font-family: "br_firma", sans-serif;
+  font-weight: 400;
+  /* overflow-x: hidden !important; */
+  position: relative;
+  width: 100vw;
+  overscroll-behavior: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.animate-move-up-class {
+  animation: moveUpAnime 0.5s backwards ease-in-out;
+}
+
+@keyframes moveUpAnime {
+  0% {
+    transform: translateY(2%);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}/*# sourceMappingURL=index.css.map */
