@@ -24,6 +24,7 @@ function App() {
   const [stage, setStage] = useState('main')
   const [pinVal, onChange] = useState('')
   const [pin, onComplete] = useState('')
+  const [ravenUsername, setRavenUsername] = useState('')
   const [errorModal, onModalCancel] = useState(false)
   const [success, onSuccess] = useState(false)
   const [completePin, setCompletePin] = useState(false)
@@ -239,7 +240,7 @@ function App() {
                 Raven Username
                 <span className='label-span verify'>VERIFY</span>
                 </div>
-                <input placeholder='e.g @monalito' className="form-input" name="raven-username" id="username" />
+                <input onChange={(e) => setRavenUsername(e.target.value)} placeholder='e.g @monalito' className="form-input" name="raven-username" id="username" />
               </div>
                 </div>
 
@@ -466,7 +467,11 @@ function App() {
 
           {/* Payment btn wrap */}
           <div  className="payment_btn">
-            <RavenButton disabled={ stage === "pin" && pinVal.length !== 6} 
+            <RavenButton disabled={ 
+              (stage === "pin" && pinVal.length !== 6) || 
+              (stage === "main" && paymentMethod === "card" && (cvv.length < 2 || cardNumber.length < 8 || expiryDate.length < 3) ) ||
+              (stage === "main" && paymentMethod === "raven" && ravenUsername.length < 1)
+            } 
             label={paymentMethod !== "transfer" && stage !== "failed-transaction" ? `Pay NGN 5000` :  stage === "failed-transaction" ? "Change payment method" : "I have sent the money"}
             color="green-light"
             className='pay_btn'
