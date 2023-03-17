@@ -9,7 +9,7 @@ import spinner from "./assets/spinner.png"
 import "raven-bank-ui/dist/esm/styles/index.css"
 import  {PinField} from 'react-pin-field'
 import ReactPinField from 'react-pin-field'
-
+import limitless from "./assets/limitless.png"
 import mCard from "./assets/mastercard.png"
 import Countdown from './helpers/coutdown';
 import ErrorModal from './modal/ErrorModal'
@@ -90,13 +90,13 @@ function App() {
   return (
     <div className="raven_webpay_wrapper">
 
-      {!success ? 
       <div className='modal_wrapper_container'>
         <div onClick={() => onModalCancel(true)} className="close_btn">
           <figure>
             {icons.close}
           </figure>
         </div>
+        {!success ? 
 
         <div className="modal_wrapper">
           {/* Header starts here */}
@@ -470,7 +470,7 @@ function App() {
             label={paymentMethod !== "transfer" && stage !== "failed-transaction" ? `Pay NGN 5000` :  stage === "failed-transaction" ? "Change payment method" : "I have sent the money"}
             color="green-light"
             className='pay_btn'
-            onClick={() => {stage === 'main' ? setStage('pin') : stage === "pin" ? setStage('confirming-transaction') :  setStage('failed-transaction')}}
+            onClick={() => {stage === 'main' ? setStage('pin') : stage === "pin"  && paymentMethod !== "raven" ? setStage('confirming-transaction') : stage === "pin" && paymentMethod === "raven" ? onSuccess(true) : setStage('failed-transaction')}}
             width="100%"
             />
           </div>
@@ -478,17 +478,44 @@ function App() {
           
         </div>
 
+: 
+
+          <div className="success_wrapper">
+
+            <div className="success_message">
+              <figure>
+                <img src={limitless} alt="Limitless" />
+              </figure>
+              <div className="text">
+                <h6>Transaction Successful</h6>
+
+                <span>
+                <p>You have successfully sent N20,000.00 to,</p>
+                <p><b>Olakunle Temitayo Abraham.</b></p>
+                </span>
+              
+              </div>
+            </div>
+
+            <div className="button_wrapper">
+              <RavenButton 
+              className='btn-outline-white-light success_btn'
+              label='Close Payment'
+              />
+            </div>
+
+          </div>
+}
+
+        {!success && 
         <div className="secured_by">
          {icons.securedBy}
         </div>
+          }
       </div>
+    
 
-      : 
 
-      <div className="success_wrapper">
-
-      </div>
-}
 
      <RavenModal
      color="black-light"

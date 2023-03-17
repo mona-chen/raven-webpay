@@ -28,6 +28,83 @@ $base-padding: 1.2rem;
         max-height: 70rem;
         // background-color: #0B8376;
 
+        .success_wrapper {
+            width: 40rem;
+            height: max-content;
+            padding-bottom: 2rem;
+            background: #014345;
+            border-radius: 8px;
+            height: 50rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;;
+            background-position: top left;
+            background-repeat: no-repeat;
+            background-size: 40rem;
+            background-image: url("../assets/feather.png");
+
+            .success_message {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                gap: 3rem;
+                margin-top: auto;
+                align-items: center;
+                justify-content: center;
+
+                figure {
+                    width: 55%;
+                    height: 55%;
+                    display: grid;
+                    place-items: center;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .text {
+                    color: white;
+                    text-align: center;
+                    display: flex;
+                    gap: 1rem;
+                    flex-direction: column;
+
+                    p {
+                        font-weight: 300;
+                        font-size: 1.4rem;
+                        color: #CCCCCC;   
+
+                        b {
+                            color: #f4f4f4
+                        }
+                    
+                    }
+                }
+
+               
+
+            }
+
+            .button_wrapper {
+                margin-top: auto;
+                width: 100%;
+                padding: 0 3rem;
+
+                >* {
+                    background-color: transparent;                    
+                }
+
+                .success_btn {
+                    width: 100%;
+                    border: 0.928172px solid #CCCCCC !important;
+                }
+                
+            }
+        }
+
         .selected {
             background: #FBFBFB;
             transition: background 0.3s ease;
