@@ -13,6 +13,8 @@ import limitless from "./assets/limitless.png"
 import mCard from "./assets/mastercard.png"
 import Countdown from './helpers/coutdown';
 import ErrorModal from './modal/ErrorModal'
+import { FaCheckCircle } from '../node_modules/react-icons/fa/index.esm';
+import Select from 'react-select'
 function App() {
 
   // begin masking function
@@ -29,6 +31,9 @@ function App() {
   const [success, onSuccess] = useState(false)
   const [completePin, setCompletePin] = useState(false)
   const [callbackUrl, setCallbackUrl] = useState('')
+  const [copied, setCopied] = useState(false)
+  const [ussd, setussd] = useState(null)
+  const [count, setCount] = useState(null)
   //always reset value on select change
   useEffect(() => {
     if(paymentMethod !== 'card'){
@@ -42,6 +47,14 @@ function App() {
     window.location.href = e
   } 
   
+  const handleCopy = async(e) => { 
+    await navigator.clipboard.writeText(e)
+    setCopied(true)
+
+    setTimeout(() => {
+      setCopied(false)
+    }, 800);
+  }
 
   
 
@@ -86,6 +99,15 @@ function App() {
       setCallbackUrl(params.get('cb'))
     } 
   }, [])
+
+  const bankCountDown = () => {
+    let min = count?.split(':')[0]
+    let sec = count?.split(':')[1]
+
+    return {min, sec}
+  }
+
+  
   
 
   return (
@@ -93,9 +115,11 @@ function App() {
 
       <div className='modal_wrapper_container'>
         <div onClick={() => onModalCancel(true)} className="close_btn">
+          {!success &&
           <figure>
             {icons.close}
           </figure>
+          }
         </div>
         {!success ? 
 
@@ -198,8 +222,11 @@ function App() {
                 <span className="bank_name">Wema Bank</span>
                 <div className="account_number">
                   <p>0121559651</p>
-                  <figure className='copy_icon'>
-                    {icons.copy}
+                  <figure onClick={()=> handleCopy('0mo')} className='copy_icon'>
+                    {copied ?
+                    <FaCheckCircle /> :
+                    icons.copy
+                    }
                   </figure>
                 </div>
                 <p className="account_name">
@@ -211,7 +238,13 @@ function App() {
                 <figure>
                   {icons.clock}
                 </figure>
-                <p>Account Expires in 14 minutes 56 seconds</p>
+                <div style={{display:"none"}}>
+                <Countdown
+                countdownTime = {840}
+                count={d => setCount(d)}
+                 />
+                </div> 
+                <p>Account Expires in {bankCountDown().min} minutes {bankCountDown().sec} seconds</p>
               </div>
             </div>
             </div>
@@ -301,25 +334,33 @@ function App() {
 
             <div className={`payment_option_container ${paymentMethod === 'ussd' && 'show'}`}>
                 <div className="ussd_container">
-                <div className="form-group">
-                <div className="input_group">
-                <label className="form-label" >
-                Choose your preferred bank
-                </label>
-                <input placeholder='Select Bank' className="form-input" name="raven-username" id="username" />
-              </div>
-                </div>
-
+                    
+                <RavenInputField 
+                label="Select preffered bank" 
+                color="light"
+                type="select" placeholder='Select Bank' 
+                name="raven-username" 
+                selectOption={[{value: 'Wema Bank', label: 'Wema Bank'}]}
+                id="username" />
+              {!ussd &&
                 <div className="payment_details_wrapper">
               <div className="note">Copy the USSD Code and proceed to pay.</div>
 
               <div className="main_details">
                 <div className="account_number">
                   <p>*737*1*67000*4#</p>
+                  <figure onClick={()=> handleCopy('0mo')} className='copy_icon'>
+                    {copied ?
+                    <FaCheckCircle /> :
+                    icons.copy
+                    }
+                  </figure>
                 </div>
               
               </div>
-            </div>                 
+              
+            </div>  
+            }               
                 </div>
               </div>
             </div>            
@@ -505,6 +546,7 @@ function App() {
             <div className="button_wrapper">
               <RavenButton 
               className='btn-outline-white-light success_btn'
+              onClick = {() => navigate(callbackUrl)}
               label='Close Payment'
               />
             </div>
@@ -528,9 +570,9 @@ function App() {
      onClose={() => onModalCancel(false)}
      >
       <ErrorModal 
-      bigText={"Are you sure you want to cancel this transaction ?"}
-      smallText={"If you cancel this transaction you will be redirected to your previous page and this transaction will fail, do you want to proceed ?"}
-      btnText={"No, Continue"}
+      bigText={"Cancel Payment"}
+      smallText={"Are you sure you want to cancel this payment request, please confirm before proceeding."}
+      btnText={"Close modal"}
       onClick = {() => navigate(callbackUrl)}
       onCancel={() => onModalCancel(false)}
       />

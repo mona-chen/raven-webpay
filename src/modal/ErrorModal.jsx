@@ -24,21 +24,24 @@ const ErrorModal = ({
       {/* text end */}
       {/* btn wrap start */}
       <div className="btn-wrap">
+ 
         <RavenButton
+          onClick={onCancel}
+          loading={loading}
+          className="close"
+          // style={{width: '50%', fontWeight: '500'}}
+          color={color}
+          label={`${btnText}`}
+        />
+               <RavenButton
           onClick={onClick}
           className="cancel btn-outline-error-light
           "
           loading={loading}
+          size="small"
           color={color}
-          style={{width: '50%'}}
-          label={`Yes, Cancel`}
-        />
-        <RavenButton
-          onClick={onCancel}
-          loading={loading}
-          style={{width: '50%', fontWeight: '500'}}
-          color={color}
-          label={`${btnText}`}
+          // style={{width: '50%'}}
+          label={`Cancel Payment`}
         />
       </div>
       {/* btn wrap end */}

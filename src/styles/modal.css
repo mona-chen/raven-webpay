@@ -20,14 +20,13 @@
   align-items: flex-end;
   gap: 1rem;
   max-height: 70rem;
-  /* ==> scrollbar styles" <== */
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper {
   width: 40rem;
   height: -moz-max-content;
   height: max-content;
   padding-bottom: 2rem;
-  background: #014345;
+  background: white;
   border-radius: 8px;
   height: 50rem;
   display: flex;
@@ -36,8 +35,8 @@
   justify-content: center;
   background-position: top left;
   background-repeat: no-repeat;
-  background-size: 40rem;
-  background-image: url("../assets/feather.png");
+  background-size: cover;
+  background-image: url("../assets/success_bg.png");
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper .success_message {
   display: flex;
@@ -59,7 +58,7 @@
   height: 100%;
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper .success_message .text {
-  color: white;
+  color: #014345;
   text-align: center;
   display: flex;
   gap: 1rem;
@@ -68,18 +67,15 @@
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper .success_message .text p {
   font-weight: 300;
   font-size: 1.4rem;
-  color: #CCCCCC;
+  color: #676767;
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper .success_message .text p b {
-  color: #f4f4f4;
+  color: #676767;
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper .button_wrapper {
   margin-top: auto;
   width: 100%;
   padding: 0 3rem;
-}
-.raven_webpay_wrapper .modal_wrapper_container .success_wrapper .button_wrapper > * {
-  background-color: transparent;
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper .button_wrapper .success_btn {
   width: 100%;
@@ -630,6 +626,22 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container {
   margin-top: 2rem;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container .payment_details_wrapper {
+  margin-bottom: 0;
+  width: 100%;
+}
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container #react-select-7-listbox {
+  z-index: 5000000 !important;
+}
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container .react-select-class > *:nth-child(3) {
+  width: 100%;
+  background-color: white !important;
+}
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container .form-group {
+  gap: unset;
 }
 .raven_webpay_wrapper .modal_wrapper_container .pin_session_wrapper {
   width: 100%;

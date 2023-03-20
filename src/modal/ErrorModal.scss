@@ -1,9 +1,8 @@
 .error-modal-wrap {
-  width: 45rem;
-  height: 30rem;
+  width: 100%;
+  height: max-content;
   background-color: var(--white-color);
   border-radius: 1.5rem;
-  padding: 3rem 0rem;
   display: flex;
   flex-direction: column;
   padding-bottom: 0rem;
@@ -25,14 +24,16 @@
     margin-top: 1rem;
     font-weight: 400;
     color: #676767;
+    margin-bottom: 2rem;
     }
 
   .btn-wrap {
     margin-top: auto;
     display: flex;
-    align-items: center;
+    // align-items: center;
     width: 100%;
-    justify-content: space-between;
+    margin-right: auto;
+    justify-content: flex-end;
     background-color: #f7f8f7;
     border-radius: unset;
     padding: 2rem 3rem;
@@ -43,9 +44,14 @@
     // }
 
     .cancel {
-      color: #FF0F00;
       font-weight: 500;
-      background-color: transparent;
+      background-color: #FF0F00;
+    }
+
+    .close {
+      background: none;
+      color: #011F3D;
+      border: 0.07rem solid #CCCCCC;
     }
   }
 }
