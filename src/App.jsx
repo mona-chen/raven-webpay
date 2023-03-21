@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import './styles/modal.css'
 import shell from './assets/shell.png'
-import mastercard from './assets/mastercard.png'
 import { icons } from './assets/icons';
 import { RavenButton, RavenInputField, RavenModal } from 'raven-bank-ui'
 import spinner from "./assets/spinner.png"
 import "raven-bank-ui/dist/esm/styles/index.css"
-import  {PinField} from 'react-pin-field'
 import ReactPinField from 'react-pin-field'
 import limitless from "./assets/limitless.png"
 import mCard from "./assets/mastercard.png"
 import Countdown from './helpers/coutdown';
 import ErrorModal from './modal/ErrorModal'
 import { FaCheckCircle } from '../node_modules/react-icons/fa/index.esm';
-import Select from 'react-select'
 function App() {
 
   // begin masking function
@@ -34,6 +31,7 @@ function App() {
   const [copied, setCopied] = useState(false)
   const [ussd, setussd] = useState(null)
   const [count, setCount] = useState(null)
+  const [loading, setLoading] = useState(false)
   //always reset value on select change
   useEffect(() => {
     if(paymentMethod !== 'card'){
@@ -107,7 +105,11 @@ function App() {
     return {min, sec}
   }
 
-  
+  setInterval(() => {
+    if (loading) {
+      setLoading(false)
+    }
+  }, 5000);
   
 
   return (
@@ -339,10 +341,16 @@ function App() {
                 label="Select preffered bank" 
                 color="light"
                 type="select" placeholder='Select Bank' 
-                name="raven-username" 
-                selectOption={[{value: 'Wema Bank', label: 'Wema Bank'}]}
+                name="raven-username"
+                onChange={e => {
+                  setussd(e)
+                  setLoading(true)
+                }}
+                menuPlacement={'top'}
+                style={{zIndex: "10000", position: "relative"}}
+                selectOption={[{value: 'Wema Bank', label: 'Wema Bank'}, {value: 'Kuda Bank', label: 'Kuda Bank'}, {value: 'Raven Bank', label: 'Raven Bank'},{value: 'Bestar Bank', label: 'BestStar Bank'},{value: 'GTB Bank', label: 'GTB Bank'}, {value: 'Roqqu Bank', label: 'Roqqu Bank'}]}
                 id="username" />
-              {!ussd &&
+              {ussd && !loading &&
                 <div className="payment_details_wrapper">
               <div className="note">Copy the USSD Code and proceed to pay.</div>
 
@@ -360,7 +368,16 @@ function App() {
               </div>
               
             </div>  
-            }               
+            }   
+
+            {loading && 
+            <div className="spinner_contain">
+          <figure className='spinner'>
+            <img src={spinner} alt="" />
+          </figure>
+            </div>
+            
+            }            
                 </div>
               </div>
             </div>            
@@ -516,7 +533,7 @@ function App() {
             label={paymentMethod !== "transfer" && stage !== "failed-transaction" ? `Pay NGN 5000` :  stage === "failed-transaction" ? "Change payment method" : "I have sent the money"}
             color="green-light"
             className='pay_btn'
-            onClick={() => {stage === 'main' ? setStage('pin') : stage === "pin"  && paymentMethod !== "raven" ? setStage('confirming-transaction') : stage === "pin" && paymentMethod === "raven" ? onSuccess(true) : setStage('failed-transaction')}}
+            onClick={() => {stage === 'main' ? setStage('pin') : stage === "pin"  && paymentMethod !== "raven" ? setStage('confirming-transaction') : stage === "pin" && paymentMethod === "raven" ? onSuccess(true) : setStage('failed-transaction') && paymentMethod === "failed-transaction" }}
             width="100%"
             />
           </div>

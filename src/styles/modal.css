@@ -20,6 +20,7 @@
   align-items: flex-end;
   gap: 1rem;
   max-height: 70rem;
+  overflow: visible;
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper {
   width: 40rem;
@@ -297,6 +298,7 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .card-input-wrapper.show {
   max-height: 40rem;
+  overflow: visible;
   display: flex;
   transition: max-height 0.3s linear-bezier(0, 1.05, 0, 1);
   -webkit-transition: max-height 0.5s;
@@ -472,6 +474,7 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container.show {
   max-height: 40rem;
+  overflow: visible;
   transition: max-height 0.3s linear-bezier(0, 1.05, 0, 1);
   -webkit-transition: max-height 0.5s;
   -moz-transition: max-height 0.5s;
@@ -580,6 +583,7 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .other_options.show {
   max-height: 40rem;
+  overflow: visible;
   transition: max-height 0.3s linear-bezier(0, 1.05, 0, 1);
   -webkit-transition: max-height 0.5s;
   -moz-transition: max-height 0.5s;
@@ -588,6 +592,7 @@
   display: flex;
   padding: 2rem;
   gap: 0.8rem;
+  cursor: pointer;
   font-weight: 400;
   color: #676767;
 }
@@ -628,13 +633,12 @@
   margin-top: 2rem;
   padding-bottom: 1rem;
   width: 100%;
+  position: relative;
+  z-index: 30000;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container .payment_details_wrapper {
   margin-bottom: 0;
   width: 100%;
-}
-.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container #react-select-7-listbox {
-  z-index: 5000000 !important;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container .react-select-class > *:nth-child(3) {
   width: 100%;
@@ -755,17 +759,6 @@
   font-size: 1.2rem;
   margin-bottom: 2rem;
 }
-.raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper .spinner {
-  width: 6rem;
-  height: 6rem;
-  animation: spin 1s linear infinite;
-  margin-bottom: 2rem;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 .raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper .note {
   background: #FFF6ED;
   border-radius: 100px;
@@ -776,6 +769,23 @@
   text-align: center;
   padding: 0.8rem 2rem;
   color: #EA872D;
+}
+.raven_webpay_wrapper .spinner_contain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.raven_webpay_wrapper .spinner {
+  width: 6rem;
+  height: 6rem;
+  animation: spin 1s linear infinite;
+  margin-bottom: 2rem;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .raven-modal-content-wrap .content {

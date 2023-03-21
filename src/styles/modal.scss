@@ -26,6 +26,7 @@ $base-padding: 1.2rem;
         align-items: flex-end;
         gap: 1rem;
         max-height: 70rem;
+        overflow: visible;
         // background-color: #0B8376;
 
         .success_wrapper {
@@ -385,6 +386,7 @@ $base-padding: 1.2rem;
 
             &.show {
                 max-height: 40rem;
+                overflow: visible;
                 display: flex;
                 transition: max-height 0.3s linear-bezier(0, 1.05, 0, 1);
                 -webkit-transition: max-height 0.5s;
@@ -512,8 +514,6 @@ $base-padding: 1.2rem;
                         transition: background 0.3s ease;
                         border-bottom: 1px solid #E5E6E6;
 
-                        
-
                         .option_title_contain {
                         display: flex;
                         justify-content: space-between;
@@ -623,6 +623,7 @@ $base-padding: 1.2rem;
 
                     &.show {
                         max-height: 40rem;
+                        overflow: visible;
                         transition: max-height 0.3s linear-bezier(0, 1.05, 0, 1);
                         -webkit-transition: max-height 0.5s;
                         -moz-transition: max-height 0.5s;
@@ -751,6 +752,7 @@ $base-padding: 1.2rem;
 
                 &.show {
                     max-height: 40rem;
+                    overflow: visible;
                     transition: max-height 0.3s linear-bezier(0, 1.05, 0, 1);
                         -webkit-transition: max-height 0.5s;
                         -moz-transition: max-height 0.5s;
@@ -761,6 +763,7 @@ $base-padding: 1.2rem;
                 display: flex;
                 padding: 2rem;
                 gap: 0.8rem;
+                cursor: pointer;
                 font-weight: 400;
                 color: #676767;
 
@@ -809,16 +812,18 @@ $base-padding: 1.2rem;
                 margin-top: 2rem;
                 padding-bottom: 1rem;
                 width: 100%;
+                position: relative;
+                z-index: 30000;
 
                 .payment_details_wrapper {
                     margin-bottom: 0;
                     width: 100%;
                 }
 
-                #react-select-7-listbox {
-                    z-index: 5000000 !important;
+                // #react-select-7-listbox {
+                //     z-index: 5000000 !important;
                    
-                }
+                // }
 
                 .react-select-class > *:nth-child(3) {
                     width: 100%;
@@ -966,19 +971,6 @@ $base-padding: 1.2rem;
                 margin-bottom: 2rem
             }
 
-            .spinner {
-                width: 6rem;
-                height: 6rem;
-                animation: spin 1s linear infinite;
-                margin-bottom: 2rem;
-              }
-              
-              @keyframes spin {
-                to {
-                  transform: rotate(360deg);
-                }
-              }
-
             .note {
                 background: #FFF6ED;
                 border-radius: 100px;
@@ -995,6 +987,27 @@ $base-padding: 1.2rem;
 
     
     }
+
+
+    .spinner_contain {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .spinner {
+        width: 6rem;
+        height: 6rem;
+        animation: spin 1s linear infinite;
+        margin-bottom: 2rem;
+      }
+      
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 }
 
 
