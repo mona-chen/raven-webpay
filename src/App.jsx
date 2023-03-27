@@ -806,14 +806,13 @@ function trigger3ds(){
                   <div  className="payment_btn">
                     <RavenButton disabled={ 
                       (stage === "pin" && pinVal.length !== 6) || 
-                      (stage === "main" && paymentMethod === "card" && (cvv.length < 2 || cardNumber.length < 8 || expiryDate.length < 3) ) ||
-                      (stage === "main" && paymentMethod === "raven" && ravenUsername.length < 1)
+                      (stage === "main" && paymentMethod === "card" && (cvv.length < 2 || cardNumber.length < 8 || expiryDate.length < 3) ) 
                     } 
                     loading={loading || isLoading}
-                    label={paymentMethod !== "transfer" && stage !== "failed-transaction" ? `Pay NGN ${config?.amount}` :  stage === "failed-transaction" ? "Change payment method" : "I have sent the money"}
+                    label={paymentMethod === "raven" && stage === "main" ? "I have sent the  money"  : paymentMethod !== "transfer" && stage !== "failed-transaction" ? `Pay NGN ${config?.amount}` :  stage === "failed-transaction" ? "Change payment method" : "I have sent the money"}
                     color="green-light"
                     className='pay_btn'
-                    onClick={() => {stage === "main" && paymentMethod === "card" ? initCardPayment() : stage === "main" && paymentMethod === "transfer" ? getBank() : ''}}
+                    onClick={() => {paymentMethod === "raven" && stage === "main" ? setStage('confirming-transaction') : stage === "main" && paymentMethod === "card" ? initCardPayment() : stage === "main" && paymentMethod === "transfer" ? getBank() : ''}}
                     width="100%"
                     />
                   </div>
