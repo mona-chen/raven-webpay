@@ -17,7 +17,7 @@ const Countdown = (props) => {
     const hours = Math.floor((total / 1000 / 60 / 60) % 24);
     return {
       total,
-      hours,
+      hours, 
       minutes,
       seconds,
     };

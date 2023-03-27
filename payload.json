@@ -1,0 +1,23 @@
+[{
+    "status":"success",
+    "message":"Transaction initialized successfully",
+    "data":{
+    "3ds_auth":true,
+    "merchant_reference":"BrYT7vCFQM",
+    "payment_reference":"202303251623DIBDHAF",
+    "data":"<div id=\"initiate3dsSimpleRedirect\" xmlns=\"http://www.w3.org/1999/html\"> <iframe id=\"methodFrame\" name=\"methodFrame\" height=\"100\" width=\"200\" > </iframe> <form id =\"initiate3dsSimpleRedirectForm\" method=\"POST\" action=\"https://geoissuer.cardinalcommerce.com/DeviceFingerprintWeb/V2/Browser/RenderMethodURL?id=5ca3bc768452a50a92f81da5\" target=\"methodFrame\"> <input type=\"hidden\" name=\"threeDSMethodData\" value=\"eyJ0aHJlZURTTWV0aG9kTm90aWZpY2F0aW9uVVJMIjoiaHR0cHM6Ly9hcC5nYXRld2F5Lm1hc3RlcmNhcmQuY29tL2NhbGxiYWNrSW50ZXJmYWNlL2dhdGV3YXkvYzc2ZTI2YTg4ZTBkNjhiNjI2MzAyZTBlZTAxNjk3OGQ1MGMyYTY0ODkwOTI5M2IyZTI4ODZkMDJlZWFmYzBhYSIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiZDM1Y2JlNWMtYjJiNC00MTlmLWJlNGUtODhmNTEyOGViNDlmIn0=\" /> </form> <script id=\"initiate-authentication-script\"> var e=document.getElementById(\"initiate3dsSimpleRedirectForm\"); if (e) { e.submit(); if (e.parentNode !== null) { e.parentNode.removeChild(e); } } </script> </div>"
+    }
+},
+
+{"status":"success",
+"message":"Proceed payer authentication",
+"data":
+{
+    "pay_ref":"WuHUTSFJhx",
+    "payment_reference":"202303251706AHIADDA",
+    "data":"<div id=\"threedsChallengeRedirect\" xmlns=\"http://www.w3.org/1999/html\" style=\" height: 100vh\"> <form id =\"threedsChallengeRedirectForm\" method=\"POST\" action=\"https://authentication.cardinalcommerce.com/ThreeDSecure/V2_1_0/CReq\" target=\"challengeFrame\"> <input type=\"hidden\" name=\"creq\" value=\"eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6IjM3NTkzOTVhLWU2OTItNGFmOC04MWZiLTNhYmVlN2Q5NDhjMyIsImFjc1RyYW5zSUQiOiJlN2M0NzA4NS0xMzk3LTRhNzktYmJjOS1hMmEwM2IzZjgxMDIiLCJjaGFsbGVuZ2VXaW5kb3dTaXplIjoiMDUiLCJtZXNzYWdlVHlwZSI6IkNSZXEiLCJtZXNzYWdlVmVyc2lvbiI6IjIuMS4wIn0\" /> </form> <iframe id=\"challengeFrame\" name=\"challengeFrame\" width=\"100%\" height=\"100%\" ></iframe> <script id=\"authenticate-payer-script\"> var e=document.getElementById(\"threedsChallengeRedirectForm\"); if (e) { e.submit(); if (e.parentNode !== null) { e.parentNode.removeChild(e); } } </script> </div>"}}
+
+]
+
+
+

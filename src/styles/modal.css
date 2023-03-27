@@ -791,4 +791,19 @@
 .raven-modal-content-wrap .content {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.raven_username {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.raven_username p {
+  margin-right: 0.5rem;
+}
+.raven_username svg {
+  cursor: pointer;
+  color: #0B8376;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
 }/*# sourceMappingURL=modal.css.map */
