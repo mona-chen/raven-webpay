@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = 'https://baas.getraventest.com';
+const API = 'https://integrations.getravenbank.com/v1';
 
 /** base url to make request to the BE end point */
 

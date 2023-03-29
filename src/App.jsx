@@ -52,6 +52,7 @@ const { config, loading, bank, raven_pay, card_ref, card_transaction_status, tra
   const [cardRef, setCardRef] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [copy2, setCopy2] = useState(false)
+  const [cardType, setCardType] = useState(null)
   
   //always reset value on select change
   useEffect(() => {
@@ -295,17 +296,37 @@ function trigger3ds(){
 
   // end api calls sections
   
-
-  function handleCardNumberChange(event) {
-    // Get the input value without spaces
-    const rawValue = event.target.value.replace(/\s/g, '');
-
-    // Add spaces to create groups of 4 digits
-    const maskedValue = rawValue.replace(/(\d{1,4})/g, '$1 ').trim();
-
-    // Set the input value to the masked version
-    setCardNumber(maskedValue);
+  function handleKeyPress(event) {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+  
+    if (/\D/.test(keyValue)) {
+      event.preventDefault();
+    }
   }
+
+function handleCardNumberChange(event) {
+  const rawValue = event.target.value.replace(/\s/g, '');
+  const maskedValue = rawValue.replace(/(\d{1,4})/g, '$1 ').trim();
+  
+  
+  // Detect card type
+  if (/^4/.test(rawValue)) {
+    setCardType('Visa');
+  } else if (/^5[1-5]/.test(rawValue)) {
+    setCardType('Mastercard');
+  } else if (/^3[47]/.test(rawValue)) {
+    setCardType('American Express');
+  } else if (/^6(?:011|5)/.test(rawValue)) {
+    setCardType('Discover');
+  } else {
+    setCardType(null);
+  }
+  
+  // Set the input value to the masked version
+  setCardNumber(maskedValue);
+}
+
 
   function handleExpiryDateChange(event) {
     // Get the input value without slashes
@@ -345,8 +366,8 @@ function trigger3ds(){
     return {min, sec}
   }
 
-  
-  
+  // console.log(cardType)
+
 
   return (
 
@@ -403,11 +424,11 @@ function trigger3ds(){
                         <figure className="radio">
                         {paymentMethod === 'card' ? icons.checked : icons.check}
                         </figure>
-                        <p>Credit Card(Mastercard)</p>
+                        <p>Credit Card{cardType && `(${cardType})`}</p>
                       </div>
-                      <div className={`option_icon ${paymentMethod === 'card' && 'selected'}`}>
+                      <div className={`option_icon ${paymentMethod === 'card' && 'selected card_icon'}`}>
                         <figure>
-                        {icons.transfer}
+                        {cardType === 'Mastercard' ? icons.mastercard : cardType === "Visa" ? icons.visa : cardType === "Verve" ? icons.verve : icons.transfer }
                         </figure>
                       </div>
                       </div>
@@ -416,13 +437,13 @@ function trigger3ds(){
                         <div className={`form-group card-input-wrapper ${paymentMethod === 'card' && 'show'}`}>
                         <div className="input_group card-input">
                           <label className="form-label" htmlFor='card-number'>Card Number</label>
-                          <input placeholder='0000 0000 0000 0000' className="form-input" name="card-number" id="card-number" maxlength="19" autocomplete="cc-number" value={cardNumber} onChange={handleCardNumberChange}/>
+                          <input placeholder='0000 0000 0000 0000' pattern="[0-9]" className="form-input" name="card-number" id="card-number" maxlength="19" autocomplete="cc-number" value={cardNumber} onChange={handleCardNumberChange}/>
                         </div>
           
                         <div className="grouped-input card-input-end">
                         <div className="input_group">
                           <label className="form-label" htmlFor='card-number'>Expiration date</label>
-                          <input placeholder='MM/YY' className="form-input" name="exp" id="exp" maxlength="7" autocomplete="cc-exp" value={expiryDate} onChange={handleExpiryDateChange}/>
+                          <input placeholder='MM/YY' pattern="[0-9 ]+" className="form-input" name="exp" id="exp" maxlength="5" autocomplete="cc-exp" value={expiryDate} onChange={handleExpiryDateChange}/>
                         </div>
                         <div className="input_group ">
                           <div className="form-label" htmlFor='card-number'>
@@ -518,11 +539,11 @@ function trigger3ds(){
                         <div className="raven_details_wrapper">
                         {!isLoading &&
                          <div className="payment_details_wrapper">
-                         <div className="note">Make a single Transfer to this raven account below.</div>
+                         <div className="note">See Instruction on how to pay with Raven Payment</div>
              
-                         <div className="main_details">
-                           <span className="bank_name">{'Narration'}</span>
-                           <div className="account_number">
+                         <div className="main_details ravenpay_main_details">
+                           <span className="label">{'Narration'}</span>
+                           <div className="account_number raven_username">
                              <p>{raven_pay?.raven_pay_ref}</p>
                              <figure onClick={()=> handleCopy(raven_pay?.raven_pay_ref)} className='copy_icon'>
                                {copied ?
@@ -531,6 +552,8 @@ function trigger3ds(){
                                }
                              </figure>
                            </div>
+                           <span className="label">{'Username'}</span>
+
                            <div className="account_name raven_username">
 
                               <p>ravenpay</p>
