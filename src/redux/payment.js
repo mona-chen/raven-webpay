@@ -112,9 +112,10 @@ export const getPaymentConfig = createAsyncThunk(
                 async (payload, thunkAPI) => {
                     try {
                         const data = await api.get(`/webpay/web/verify_card_transaction?payment_reference=${payload}`)
-            
+
                         if (data?.data?.status === "success") {
-                          await thunkAPI.dispatch(setCardTransactionStatus(data?.data?.data));
+                          console.log('got here')
+                          await thunkAPI.dispatch(setCardTransactionStatus(data?.data));
                         }
                           return data?.data
                     } catch (error) {
@@ -150,7 +151,7 @@ export const getPaymentConfig = createAsyncThunk(
           isUssdLoading: false,
           ussd_details: {},
           card_ref: null,
-          card_transaction_status: {},
+          card_trx: [],
           raven_pay: {},
           bank: null,
         },
@@ -224,18 +225,18 @@ export const getPaymentConfig = createAsyncThunk(
             state = null;
           },
 
-          [initiateCardTransaction.pending]: (state) => {
-            state.loading = true;
-          },
-          [initiateCardTransaction.fulfilled]: (state) => {
-            state.loading = false;
-          },
-          [initiateCardTransaction.rejected]: (state) => {
-            // localStorage.removeItem("token");
-            state.loading = false;
-            state.isAuth = false;
-            state = null;
-          },
+          // [initiateCardTransaction.pending]: (state) => {
+          //   state.loading = true;
+          // },
+          // [initiateCardTransaction.fulfilled]: (state) => {
+          //   state.loading = false;
+          // },
+          // [initiateCardTransaction.rejected]: (state) => {
+          //   // localStorage.removeItem("token");
+          //   state.loading = false;
+          //   state.isAuth = false;
+          //   state = null;
+          // },
 
           [initiate3dsTransaction.pending]: (state) => {
             state.loading = true;
