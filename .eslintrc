@@ -1,15 +1,7 @@
 
 {
 "root": true,
-"extends": [
-  "prettier",
-  "plugin:prettier/recommended",
-  "eslint:recommended",
-  "plugin:react/recommended",
-  "plugin:@typescript-eslint/eslint-recommended",
-  "plugin:@typescript-eslint/recommended"
-],
-"parser": "@typescript-eslint/parser",
+"extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended", "prettier"],
 "plugins": [
   "@typescript-eslint",
   "prettier",
@@ -20,10 +12,11 @@
   "react-hooks/rules-of-hooks": "error",
   "react-hooks/exhaustive-deps": "warn",
   "no-unused-vars": "off",
+  "react/react-in-jsx-scope": "off",
   "@typescript-eslint/no-non-null-assertion": "off",
   "@typescript-eslint/ban-ts-comment": "off",
   "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-  "@typescript-eslint/no-explicit-any": "off",
+  "@typescript-eslint/no-explicit-any": "off"
 },
 "settings": {
   "react": {
