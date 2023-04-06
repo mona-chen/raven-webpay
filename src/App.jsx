@@ -5,6 +5,7 @@ import shell from './assets/shell.png'
 import { icons } from './assets/icons'
 import { RavenButton, RavenInputField, RavenModal } from 'raven-bank-ui'
 import spinner from './assets/spinner.png'
+import logo_icon from './assets/logo_icon.svg'
 import 'raven-bank-ui/dist/esm/styles/index.css'
 import ReactPinField from 'react-pin-field'
 import limitless from './assets/limitless.png'
@@ -390,7 +391,11 @@ function App() {
                         </span>
                       </div>
                       <div className='business_logo'>
-                        <img src={shell} alt='business_logo' />
+                        <figure>
+                        {icons.logo_icon}
+
+                        </figure>
+                        {/* <img src={logo_icon} alt='business_logo' /> */}
                       </div>
                     </div>
                     {/* <p>

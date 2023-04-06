@@ -494,7 +494,7 @@ $base-padding: 1.2rem;
                                 font-weight: 900;
                                 font-size: 1.6rem;
                                 letter-spacing: -0.03em;                            
-                                color: #0B8376;
+                                color: #020202;
                             }
                         }
                     }
@@ -504,12 +504,26 @@ $base-padding: 1.2rem;
                         height: 5rem;
                         border-radius: 50%;
                         object-fit: cover;
+                        align-items: center;
             
                         img {
                             width: 100%;
                             height: 100%;
                             object-fit: contain;
                         }
+
+                        figure {
+                            display: grid;
+                            place-items: center;
+                            width: fit-content;
+                            height: fit-content;
+                            svg {
+                                width: 80%;
+                                height: 80%;
+                            }
+                        }
+
+                        
                     }
                 }
             }

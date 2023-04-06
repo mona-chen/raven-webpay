@@ -377,7 +377,7 @@
   font-weight: 900;
   font-size: 1.6rem;
   letter-spacing: -0.03em;
-  color: #0B8376;
+  color: #020202;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo {
   width: 5rem;
@@ -385,12 +385,25 @@
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
+  align-items: center;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo img {
   width: 100%;
   height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
+}
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo figure {
+  display: grid;
+  place-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo figure svg {
+  width: 80%;
+  height: 80%;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper {
   display: flex;
