@@ -24,7 +24,7 @@ import {
   verifyCardTrx,
   initRavenPay,
 } from './redux/payment'
-import { formatNumWithCommaNaira, generateReference } from './helpers/helpers'
+import { generateReference } from './helpers/helpers'
 import parse from 'html-react-parser'
 
 function App() {
@@ -55,7 +55,7 @@ function App() {
   const [expiryDate, setExpiryDate] = useState('')
   const [cvv, setCvv] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('card')
-  // const [moreOptions, setMoreOptions] = useState(prefferedGateway?.length > 4 ? false : true)
+  const [moreOptions, setMoreOptions] = useState(prefferedGateway?.length > 4 ? false : true)
   const [stage, setStage] = useState('main')
   const [pinVal, onChange] = useState('')
   const [pin, onComplete] = useState('')
@@ -350,7 +350,7 @@ function App() {
   }
 
   // retrieve callback url
-  // const params = new URLSearchParams(window.location.search)
+  const params = new URLSearchParams(window.location.search)
 
   useEffect(() => {
     if (config?.redirect_url !== null)
@@ -386,7 +386,7 @@ function App() {
                         <p className='business_email'>{config?.email}</p>
                         <span className='payment_amount'>
                           <p>Pay</p>
-                          <h5>₦{formatNumWithCommaNaira(String(config?.amount)) }</h5>
+                          <h5>{config?.amount}</h5>
                         </span>
                       </div>
                       <div className='business_logo'>
@@ -420,9 +420,30 @@ function App() {
                   {stage === 'main' && (
                     <div className='payment_method_wrapper'>
                       {/* Display card payment if preffered */}
+                      {prefferedGateway?.includes('card') && (
                         <div
-                          className={`option_wrapper selected `}
+                          onClick={() => setPaymentMethod('card')}
+                          className={`option_wrapper ${paymentMethod === 'card' && 'selected'}`}
                         >
+                          {/* <div className='option_title_contain'>
+                            <div className='option'>
+                              <figure className='radio'>
+                                {paymentMethod === 'card' ? icons.checked : icons.check}
+                              </figure>
+                              <p>Credit Card{cardType && `(${cardType})`}</p>
+                            </div>
+                            <div className={`option_icon ${paymentMethod === 'card' && 'selected card_icon'}`}>
+                              <figure>
+                                {cardType === 'Mastercard'
+                                  ? icons.mastercard
+                                  : cardType === 'Visa'
+                                  ? icons.visa
+                                  : cardType === 'Verve'
+                                  ? icons.verve
+                                  : icons.transfer}
+                              </figure>
+                            </div>
+                          </div> */}
 
                           {/* Card input starts here */}
                           <div className={`form-group card-input-wrapper ${paymentMethod === 'card' && 'show'}`}>
@@ -480,8 +501,72 @@ function App() {
                           </div>
                           {/* Card input ends here */}
 
-                          {/* Transfer payment option input */}
-                          <div className={`payment_option_container ${paymentMethod === 'transfer' && 'show'}`}>
+
+                  {/* Payment btn wrap */}
+                  <div className='payment_btn'>
+                    <RavenButton
+                      disabled={
+                        (stage === 'pin' && pinVal.length !== 6) ||
+                        stage === 'confirming-transaction' ||
+                        (stage === 'main' &&
+                          paymentMethod === 'card' &&
+                          (cvv.length < 2 || cardNumber.length < 8 || expiryDate.length < 3))
+                      }
+                      loading={loading || isLoading}
+                      label={
+                        stage === 'confirming-transaction'
+                          ? 'Confirming Transaction'
+                          : paymentMethod === 'raven' && stage === 'main'
+                          ? 'I have sent the  money'
+                          : paymentMethod !== 'transfer' && stage !== 'failed-transaction'
+                          ? `Pay NGN ${config?.amount}`
+                          : stage === 'failed-transaction'
+                          ? 'Change payment method'
+                          : 'I have sent the money'
+                      }
+                      color='green-light'
+                      className='pay_btn'
+                      onClick={() => {
+                        success
+                          ? navigate(callbackUrl)
+                          : paymentMethod === 'raven' && stage === 'main'
+                          ? setStage('confirming-transaction')
+                          : stage === 'main' && paymentMethod === 'card'
+                          ? initCardPayment()
+                          : stage === 'main' && paymentMethod === 'transfer'
+                          ? setStage('confirming-transaction')
+                          : ''
+                      }}
+                      size="small"
+                      width='100%'
+                    />
+                  </div>
+                  {/* End Payment btn wrap */}
+                        </div>
+                      )}
+
+                      {/* Display card payment  */}
+
+                      {/* Show transfer is available as part of payment option */}
+                      {
+                        prefferedGateway?.includes('bank_transfer') && (
+                          <div
+                            onClick={() => setPaymentMethod('transfer')}
+                            className={`option_wrapper ${paymentMethod === 'transfer' && 'selected'}`}
+                          >
+                            <div className='option_title_contain'>
+                              <div className='option'>
+                                <figure className='radio'>
+                                  {paymentMethod === 'transfer' ? icons.checked : icons.check}
+                                </figure>
+                                <p>Transfers</p>
+                              </div>
+                              <div className={`option_icon ${paymentMethod === 'transfer' && 'selected'}`}>
+                                <figure>{icons.transfer}</figure>
+                              </div>
+                            </div>
+
+                            <div className={`payment_option_container ${paymentMethod === 'transfer' && 'show'}`}>
                               <div className='payment_details_wrapper'>
                                 <div className='note'>Make a single Transfer to this account before it expires.</div>
 
@@ -507,9 +592,30 @@ function App() {
                                 </div>
                               </div>
                             </div>
-                            {/* End payment option input */}
+                          </div>
+                        )
+                        // end show transfer
+                      }
 
-                            {/* Raven pay payment option view */}
+                      {/* Show raven is available as part of payment option */}
+                      {
+                        prefferedGateway?.includes('raven') && (
+                          <div
+                            onClick={() => setPaymentMethod('raven')}
+                            className={`option_wrapper ${paymentMethod === 'raven' && 'selected'}`}
+                          >
+                            <div className='option_title_contain'>
+                              <div className='option'>
+                                <figure className='radio'>
+                                  {paymentMethod === 'raven' ? icons.checked : icons.check}
+                                </figure>
+                                <p>Raven Pay</p>
+                              </div>
+                              <div className={`option_icon ${paymentMethod === 'raven' && 'selected'}`}>
+                                <figure>{icons.ravenpay}</figure>
+                              </div>
+                            </div>
+
                             <div className={`payment_option_container ${paymentMethod === 'raven' && 'show'}`}>
                               <div className='raven_details_wrapper'>
                                 {!isLoading && (
@@ -547,10 +653,32 @@ function App() {
                                 )}
                               </div>
                             </div>
-                            {/* end ravenpay view */}
+                          </div>
+                        )
+                        // end show raven_payment
+                      }
 
-                            {/* qr pay view */}
-                            <div className={`payment_option_container ${paymentMethod === 'qr' && 'show'}`}>
+                      <div className={`other_options ${moreOptions && 'show'}`}>
+                        {/* Show qr is available as part of payment option */}
+                        {
+                          prefferedGateway?.includes('qr') && (
+                            <div
+                              onClick={() => setPaymentMethod('qr')}
+                              className={`option_wrapper ${paymentMethod === 'qr' && 'selected'}`}
+                            >
+                              <div className='option_title_contain'>
+                                <div className='option'>
+                                  <figure className='radio'>
+                                    {paymentMethod === 'qr' ? icons.checked : icons.check}
+                                  </figure>
+                                  <p>QR Code Pay</p>
+                                </div>
+                                <div className={`option_icon ${paymentMethod === 'qr' && 'selected'}`}>
+                                  <figure>{icons.qr}</figure>
+                                </div>
+                              </div>
+
+                              <div className={`payment_option_container ${paymentMethod === 'qr' && 'show'}`}>
                                 <div className='payment_details_wrapper'>
                                   <div className='note'>
                                     Scan the QR code below in your bank mobile app that supports NQR to complete the
@@ -564,10 +692,31 @@ function App() {
                                   </div>
                                 </div>
                               </div>
-                            {/* end qr pay view */}
+                            </div>
+                          )
+                          // end show qr payment
+                        }
 
-                            {/* ussd pay view */}
-                            <div className={`payment_option_container ${paymentMethod === 'ussd' && 'show'}`}>
+                        {/* Show qr is available as part of payment option */}
+                        {
+                          prefferedGateway?.includes('ussd') && (
+                            <div
+                              onClick={() => setPaymentMethod('ussd')}
+                              className={`option_wrapper ${paymentMethod === 'ussd' && 'selected'}`}
+                            >
+                              <div className='option_title_contain'>
+                                <div className='option'>
+                                  <figure className='radio'>
+                                    {paymentMethod === 'ussd' ? icons.checked : icons.check}
+                                  </figure>
+                                  <p>USSD Pay</p>
+                                </div>
+                                <div className={`option_icon ${paymentMethod === 'ussd' && 'selected'}`}>
+                                  <figure>{icons.ussd}</figure>
+                                </div>
+                              </div>
+
+                              <div className={`payment_option_container ${paymentMethod === 'ussd' && 'show'}`}>
                                 <div className='ussd_container'>
                                   <RavenInputField
                                     label='Select preffered bank'
@@ -579,7 +728,7 @@ function App() {
                                       setussd(e)
                                       retrieveUssdCode(e?.value)
                                     }}
-                                    // menuPlacement={'top'}
+                                    menuPlacement={'top'}
                                     style={{ zIndex: '10000', position: 'relative' }}
                                     selectOption={formatSelectOption(ussd_details?.bank_list)}
                                     id='bank'
@@ -611,108 +760,20 @@ function App() {
                                   )}
                                 </div>
                               </div>
-                            {/* end ussd pay view */}
-
-
-                          {/* Payment btn wrap */}
-                          <div className='payment_btn'>
-                            <RavenButton
-                              disabled={
-                                (stage === 'pin' && pinVal.length !== 6) ||
-                                stage === 'confirming-transaction' ||
-                                (stage === 'main' &&
-                                  paymentMethod === 'card' &&
-                                  (cvv.length < 2 || cardNumber.length < 8 || expiryDate.length < 3))
-                              }
-                              loading={loading || isLoading}
-                              label={
-                                stage === 'confirming-transaction'
-                                  ? 'Confirming Transaction'
-                                  : paymentMethod === 'raven' && stage === 'main'
-                                  ? 'I have sent the  money'
-                                  : paymentMethod !== 'transfer' && stage !== 'failed-transaction'
-                                  ? `Pay  ₦${formatNumWithCommaNaira(String(config?.amount))}`
-                                  : stage === 'failed-transaction'
-                                  ? 'Change payment method'
-                                  : 'I have sent the money'
-                              }
-                              color='green-light'
-                              className='pay_btn'
-                              onClick={() => {
-                                success
-                                  ? navigate(callbackUrl)
-                                  : paymentMethod === 'raven' && stage === 'main'
-                                  ? setStage('confirming-transaction')
-                                  : stage === 'main' && paymentMethod === 'card'
-                                  ? initCardPayment()
-                                  : stage === 'main' && paymentMethod === 'transfer'
-                                  ? setStage('confirming-transaction')
-                                  : ''
-                              }}
-                              size="small"
-                              width='100%'
-                            />
-                          </div>
-                          {/* End Payment btn wrap */}
-                        </div>
-                      {/* Display card payment  */}
-
-                      <div className="payment_select_option">
-                       <p className="select_option_title">
-                        SELECT PAYMENT OPTION
-                       </p>
-
-                       <div className="options_wrapper">
-
-                        {prefferedGateway?.includes('card') && paymentMethod !== 'card' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('card')}
-                          >
-                          <figure>{icons.credit_card}</figure>
-                            <p>Card Payment</p>
-                          </div>
-                        )}
-
-                        {prefferedGateway?.includes('bank_transfer') && paymentMethod !== 'transfer' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('transfer')}
-                          >
-                          <figure>{icons.transfer}</figure>
-                            <p>Bank Transfer</p>
-                          </div>
-                        )}
-
-                        {prefferedGateway?.includes('raven') && paymentMethod !== 'raven' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('raven')}
-                          >
-                          <figure>{icons.ravenpay}</figure>
-                            <p>Raven Pay</p>
-                          </div>
-                        )}
-
-                        {prefferedGateway?.includes('qr') && paymentMethod !== 'qr' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('qr')}
-                          >
-                          <figure>{icons.qr}</figure>
-                            <p>NQR Payment</p>
-                          </div>
-                        )}
-
-                        {prefferedGateway?.includes('ussd') && paymentMethod !== 'ussd' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('ussd')}
-                          >
-                          <figure>{icons.ussd}</figure>
-                            <p>USSD Payment</p>
-                          </div>
-                        )}
-
-                       </div>
+                            </div>
+                          )
+                          // end show ussd payments section
+                        }
                       </div>
-                        
-  
+
+                      <div
+                        style={{ display: moreOptions && 'none' }}
+                        onClick={() => setMoreOptions(!moreOptions)}
+                        className='more_options_toggle'
+                      >
+                        <figure>{!moreOptions ? icons.plus : ''}</figure>
+                        <p>{!moreOptions ? 'Other Payment methods' : ''}</p>
+                      </div>
                     </div>
                   )}
                   {/* Payment method ends here */}

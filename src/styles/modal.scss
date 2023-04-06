@@ -634,7 +634,7 @@ $base-padding: 1.2rem;
                 }
 
                 .payment_btn {
-                    padding: 3rem;
+                    // padding: 2rem;
                     width: 100%;
 
                     .pay_btn {
@@ -664,7 +664,7 @@ $base-padding: 1.2rem;
                         border-radius: 1.6rem;
                         display: flex;
                         flex-direction: column;
-                        align-items: center;
+                        align-items: flex-start;
                         margin-top: 2rem;
                         margin-bottom: 2rem;
                         padding: 2rem 2rem;
@@ -677,7 +677,7 @@ $base-padding: 1.2rem;
                             font-size: 1rem;
                             font-weight: 400;
                             width: fit-content;
-                            text-align: center;
+                            text-align: start;
                             padding: 0.8rem 2rem;
                             color: #EA872D;
                         }
@@ -685,7 +685,7 @@ $base-padding: 1.2rem;
                         .main_details {
                             display: flex;
                             flex-direction: column;
-                            align-items: center;
+                            align-items: start;
                             gap: 0.5rem;
                             margin-top: 2.4rem;
                             width: 100%;
@@ -849,7 +849,7 @@ $base-padding: 1.2rem;
 
              .raven_details_wrapper {
                 margin-top: 2rem;
-                margin-bottom: 5rem;
+                // margin-bottom: 5rem;
 
                 .verify {
                     color: #0B8376;
@@ -1044,10 +1044,55 @@ $base-padding: 1.2rem;
                 color: #EA872D;
             }
         }
+  
+        .payment_select_option {
+            display: flex;
+            padding: 2rem;
+            flex-direction: column ;
 
- 
+            .select_option_title {
+                font-style: normal;
+                font-weight: 500;
+                font-size: 1rem;
+                line-height: 160%;                
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                color: #676767;
+                opacity: 0.5;
+            }
 
-    
+            .options_wrapper {
+                display:flex;
+                flex-direction: column;
+                margin-top: 1rem;
+                gap: 1rem;
+                
+                .options {
+                    padding: 1.5rem 2rem;
+                    display: flex;
+                    gap: 1rem;
+                    background: #F7F8F7;
+                    border-radius: 0.8rem;
+                    align-items: center;
+                    cursor: pointer;
+
+                    figure {
+                        display: grid;
+                        width: fit-content;
+                        height: fit-content;
+                        place-items: center;
+                    }
+
+                    p {
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 1.8rem;                        
+                        letter-spacing: -0.01em;                        
+                        color: #333333;
+                    }
+                }
+            }
+        }
     }
 
 
