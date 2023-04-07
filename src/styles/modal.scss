@@ -31,7 +31,7 @@ $base-padding: 1.2rem;
         gap: 1rem;
         width: 40rem;
         padding: 1.5rem 0rem;
-        max-height: 70rem;
+        max-height: 100vh;
         overflow: hidden;
         // flex: 1;
         // overflow: visible;
@@ -394,7 +394,7 @@ $base-padding: 1.2rem;
             }
 
             .card-input-end {
-                margin-bottom: 2rem;
+                // margin-bottom: 2rem;
             }
 
             &.show {
@@ -649,11 +649,12 @@ $base-padding: 1.2rem;
 
                 .payment_btn {
                     // padding: 2rem;
+                    margin: 2rem 0 1rem 0;
                     width: 100%;
 
                     .pay_btn {
                         width: 100%;
-                        font-weight: 900;
+
                     }
                 }
 
@@ -680,7 +681,7 @@ $base-padding: 1.2rem;
                         flex-direction: column;
                         align-items: flex-start;
                         margin-top: 2rem;
-                        margin-bottom: 2rem;
+                        // margin-bottom: 2rem;
                         padding: 2rem 2rem;
                         overflow: hidden;
     
@@ -750,7 +751,8 @@ $base-padding: 1.2rem;
                                 display: flex;
                                 flex-direction: row ;
                                 width: 100%;
-                                justify-content: space-between;
+                                gap: 1rem;
+                                // justify-content: space-between;
                                 align-items: center;
                             
                                 p {
@@ -791,10 +793,10 @@ $base-padding: 1.2rem;
                             display: flex;
                             flex-direction: row;
                             gap: 0.8rem;
-                            align-items: center;
+                            // align-items: center;
                             border-top: 1px solid #E5E6E6;
                             width: 100%;
-                            justify-content: center;
+                            // justify-content: center;
                             padding-top: 1.2rem;
                             margin-top: 2.4rem;
     
@@ -886,7 +888,7 @@ $base-padding: 1.2rem;
 
              .ussd_container {
                 margin-top: 2rem;
-                padding-bottom: 1rem;
+                // padding-bottom: 1rem;
                 width: 100%;
                 position: relative;
                 z-index: 1;

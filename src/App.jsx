@@ -542,7 +542,7 @@ function App() {
                                       </div>
                                     </div>
 
-                                    <div style={{ textAlign: 'center' }} className='expiry_period'>
+                                    <div style={{ textAlign: 'start' }} className='expiry_period'>
                                       <p>
                                         <b>Note:</b> Make sure you send the exact amount, whilst using the narration
                                         provided above.
@@ -654,7 +654,7 @@ function App() {
                                   ? setStage('confirming-transaction')
                                   : ''
                               }}
-                              size="small"
+                              // size="medium"
                               width='100%'
                             />
                           </div>

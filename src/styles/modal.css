@@ -20,7 +20,7 @@
   gap: 1rem;
   width: 40rem;
   padding: 1.5rem 0rem;
-  max-height: 70rem;
+  max-height: 100vh;
   overflow: hidden;
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper {
@@ -298,9 +298,6 @@
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .card-input-wrapper .card-input {
   padding-top: 2rem;
 }
-.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .card-input-wrapper .card-input-end {
-  margin-bottom: 2rem;
-}
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .card-input-wrapper.show {
   max-height: 40rem;
   overflow: visible;
@@ -482,11 +479,11 @@
   height: 70% !important;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_btn {
+  margin: 2rem 0 1rem 0;
   width: 100%;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_btn .pay_btn {
   width: 100%;
-  font-weight: 900;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container {
   max-height: 0;
@@ -510,7 +507,6 @@
   flex-direction: column;
   align-items: flex-start;
   margin-top: 2rem;
-  margin-bottom: 2rem;
   padding: 2rem 2rem;
   overflow: hidden;
 }
@@ -571,7 +567,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-between;
+  gap: 1rem;
   align-items: center;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .raven_username p {
@@ -604,10 +600,8 @@
   display: flex;
   flex-direction: row;
   gap: 0.8rem;
-  align-items: center;
   border-top: 1px solid #E5E6E6;
   width: 100%;
-  justify-content: center;
   padding-top: 1.2rem;
   margin-top: 2.4rem;
 }
@@ -680,7 +674,6 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container {
   margin-top: 2rem;
-  padding-bottom: 1rem;
   width: 100%;
   position: relative;
   z-index: 1;
