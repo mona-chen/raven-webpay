@@ -446,6 +446,17 @@ function App() {
                                 value={cardNumber}
                                 onChange={handleCardNumberChange}
                               />
+                              <div className={`card_icon`}>
+                              <figure>
+                                {cardType === 'Mastercard'
+                                  ? icons.mastercard
+                                  : cardType === 'Visa'
+                                  ? icons.visa
+                                  : cardType === 'Verve'
+                                  ? icons.verve
+                                  : icons.credit_card}
+                              </figure>
+                              </div>
                             </div>
 
                             <div className='grouped-input card-input-end'>
@@ -480,6 +491,7 @@ function App() {
                                   value={cvv}
                                   onChange={handleCvvChange}
                                 />
+                                
                               </div>
                             </div>
                           </div>
