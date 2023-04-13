@@ -344,7 +344,7 @@ function App() {
     const rawValue = event.target.value.replace(/\s/g, '')
 
     // Replace all digits with asterisks except the last 4
-    const maskedValue = rawValue.replace(/\d(?=\d{3})/g, '*')
+    const maskedValue = rawValue.replace(/\d(?=\d{2})/g, '*')
 
     // Set the input value to the masked version
     setCvv(maskedValue)
@@ -475,7 +475,7 @@ function App() {
                                   className='form-input'
                                   name='cvv'
                                   id='cvv'
-                                  maxLength='4'
+                                  maxLength='3'
                                   autoComplete='cc-csc'
                                   value={cvv}
                                   onChange={handleCvvChange}

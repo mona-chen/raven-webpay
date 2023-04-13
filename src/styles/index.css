@@ -129,6 +129,10 @@ html {
   }
 }
 
+* {
+  font-family: "br_firma", sans-serif;
+}
+
 body {
   font-size: 1.4rem;
   font-family: "br_firma", sans-serif;
