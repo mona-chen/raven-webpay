@@ -343,9 +343,8 @@ function App() {
     // Get the input value without spaces
     const rawValue = event.target.value.replace(/\s/g, '')
 
-    // Replace all digits with asterisks except the last 4
-    const maskedValue = rawValue.replace(/\d(?=\d{2})/g, '*')
-
+    // Replace all digits with asterisks except the last 3
+    const maskedValue = rawValue.replace(/\d(?=\d{3})/g, '*')
     // Set the input value to the masked version
     setCvv(maskedValue)
   }
