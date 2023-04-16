@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import './styles/modal.css'
-import shell from './assets/shell.png'
+// import shell from './assets/shell.png'
 import { icons } from './assets/icons'
-import { RavenButton, RavenInputField, RavenModal } from 'raven-bank-ui'
+import { RavenButton, RavenInputField, RavenModal, RavenToolTip } from 'raven-bank-ui'
 import spinner from './assets/spinner.png'
-import logo_icon from './assets/logo_icon.svg'
+// import logo_icon from './assets/logo_icon.svg'
 import 'raven-bank-ui/dist/esm/styles/index.css'
 import ReactPinField from 'react-pin-field'
 import limitless from './assets/limitless.png'
@@ -365,6 +365,7 @@ function App() {
 
     return { min, sec }
   }
+  const has_keys = Object.keys(config)
 
   return (
     <div className='raven_webpay_wrapper'>
@@ -386,7 +387,9 @@ function App() {
                         <p className='business_email'>{config?.email}</p>
                         <span className='payment_amount'>
                           <p>Pay</p>
-                          <h5>₦{formatNumWithCommaNaira(String(config?.amount)) }</h5>
+                          {has_keys.length > 0 ?
+                          <h5>₦{formatNumWithCommaNaira(String(config?.amount)) }</h5> :
+                          ''}
                         </span>
                       </div>
                       <div className='business_logo'>
@@ -478,7 +481,15 @@ function App() {
                               <div className='input_group '>
                                 <div className='form-label' htmlFor='card-number'>
                                   Security code
-                                  <span className='label-span what-this'>Whats this ?</span>
+                                  <span style={{zIndex : 500}} className='label-span what-this tooltip-hover-wrap' >Whats this ?
+                                  <RavenToolTip
+                                  text='The CVV/CVC code (Card Verification Value/Code) is located on the back of your credit/debit card on the right side of the white signature strip.'
+                                  color={'black-light'}
+                                  textColor={'white-light'}
+                                   position={'top-left'}> 
+                                  </RavenToolTip>
+
+                                  </span>
                                 </div>
                                 <input
                                   placeholder='CVV'
