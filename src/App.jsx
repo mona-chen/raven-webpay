@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import './styles/modal.css'
+import './styles/index.css'
+
 // import shell from './assets/shell.png'
 import { icons } from './assets/icons'
 import { RavenButton, RavenInputField, RavenModal, RavenToolTip } from 'raven-bank-ui'
@@ -73,6 +75,18 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [copy2, setCopy2] = useState(false)
   const [cardType, setCardType] = useState(null)
+  const [inlineRef, setInlineRef] = useState(null)
+  const [closed, setClosed] = useState(false)
+  const [mode, setMode] = useState(null)
+
+
+  // programmatically inject the app to document body
+
+  const inject = () => {
+    const ravenpaydiv = document.createElement("div");
+    ravenpaydiv.id = "raven_webpay_wrapper";
+    document.body.appendChild(ravenpaydiv);
+  }
 
   //always reset value on select change
   useEffect(() => {
@@ -117,9 +131,26 @@ function App() {
     return list
   }
 
+  //declare a global window object
+  window.RavenWebpay = {
+    ref: (e) => {
+      setInlineRef(e)
+      return inlineRef
+    },
+    success: success,
+    closed: closed,
+    start: false,
+    mode: (e) => {
+      setMode(e)
+      return e
+    }
+  }
+  // end window object
+
+
   // get transaction ref from url
   const ref = window.location.search
-  let trx = ref.split('=')[1]
+  let trx = inlineRef ? inlineRef : ref.split('=')[1] 
 
   const userRef = generateReference()
   // end transaction ref getter
@@ -142,7 +173,9 @@ function App() {
     await dispatch(getPaymentConfig(trx))
     // if (config) console.log(config)
     // console.log(config, 'ieni')
+    inject()
   }
+
 
   async function initCardPayment() {
     const payload = {
@@ -207,7 +240,7 @@ function App() {
       if (call?.payload?.data?.status === 'successful') return clearInterval(cardint)
       if (success) return clearInterval(int)
     }, 10000)
-  }, [])
+  }, [trx])
 
   // check card transaction status
   let cardint
@@ -269,7 +302,6 @@ function App() {
       clearInterval(int)
     }
 
-    // console.log(transferStatus, 'tr')
   }, [transferStatus])
 
   // effect calls to init ussd
@@ -302,6 +334,12 @@ function App() {
       setExternalView(false)
     }
   }, [card_transaction_status, success])
+
+
+  //effect call for window ref 
+  useEffect(() => {
+    getConfig()
+  }, [inlineRef])
 
   //end effects
 
@@ -368,7 +406,7 @@ function App() {
   const has_keys = Object.keys(config)
 
   return (
-    <div className='raven_webpay_wrapper'>
+    <div className={`raven_webpay_wrapper ${mode && mode}`}>
       <div className='modal_wrapper_container'>
         <div onClick={() => onModalCancel(true)} className='close_btn'>
           {!success && <figure>{icons.close}</figure>}
@@ -486,7 +524,7 @@ function App() {
                                   text='The CVV/CVC code (Card Verification Value/Code) is located on the back of your credit/debit card on the right side of the white signature strip.'
                                   color={'black-light'}
                                   textColor={'white-light'}
-                                   position={'top-left'}> 
+                                  position={'top-left'}> 
                                   </RavenToolTip>
 
                                   </span>
@@ -916,7 +954,7 @@ function App() {
           bigText={'Cancel Payment'}
           smallText={'Are you sure you want to cancel this payment request, please confirm before proceeding.'}
           btnText={'Close modal'}
-          onClick={() => navigate(callbackUrl)}
+          onClick={() => {navigate(callbackUrl), setClosed(true)}}
           onCancel={() => onModalCancel(false)}
         />
       </RavenModal>
