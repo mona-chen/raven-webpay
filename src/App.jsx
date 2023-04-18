@@ -394,7 +394,7 @@ function App() {
     if (config?.redirect_url !== null)
       setCallbackUrl(
         `${config?.redirect_url}?trx_ref=${config?.trx_ref}&merchant_ref=${config?.merchant_ref}&status=${config?.status}`,
-      )
+      ) 
   }, [config])
 
   const bankCountDown = () => {
@@ -435,7 +435,8 @@ function App() {
                         {icons.logo_icon}
 
                         </figure>
-                        {/* <img src={logo_icon} alt='business_logo' /> */}
+                        {/* <img src={'https://www.northeastern.edu/graduate/blog/wp-content/uploads/2019/09/iStock-1150384596-2.jpg'} alt='business_logo' /> */}
+
                       </div>
                     </div>
                     {/* <p>
@@ -473,7 +474,7 @@ function App() {
                           <div className={`form-group card-input-wrapper ${paymentMethod === 'card' && 'show'}`}>
                             <div className='input_group card-input'>
                               <label className='form-label' htmlFor='card-number'>
-                                Card Number
+                                Card Payment
                               </label>
                               <input
                                 placeholder='0000 0000 0000 0000'
@@ -486,7 +487,7 @@ function App() {
                                 value={cardNumber}
                                 onChange={handleCardNumberChange}
                               />
-                              <div className={`card_icon`}>
+                              <div className={cardType && `card_icon`}>
                               <figure>
                                 {cardType === 'Mastercard'
                                   ? icons.mastercard
@@ -494,7 +495,7 @@ function App() {
                                   ? icons.visa
                                   : cardType === 'Verve'
                                   ? icons.verve
-                                  : icons.credit_card}
+                                  : ''}
                               </figure>
                               </div>
                             </div>
@@ -548,7 +549,7 @@ function App() {
                           {/* Transfer payment option input */}
                           <div className={`payment_option_container ${paymentMethod === 'transfer' && 'show'}`}>
                               <div className='payment_details_wrapper'>
-                                <div className='note'>Make a single Transfer to this account before it expires.</div>
+                                <div className='note'><b style={{color: '#EA872D'}}>Bank Transfer:</b> Make a single Transfer to this account before it expires.</div>
 
                                 <div className='main_details'>
                                   <span className='bank_name'>{bank?.bank}</span>
@@ -579,11 +580,11 @@ function App() {
                               <div className='raven_details_wrapper'>
                                 {!isLoading && (
                                   <div className='payment_details_wrapper'>
-                                    <div className='note'>See Instruction on how to pay with Raven Payment</div>
+                                <div className='note'><b style={{color: '#EA872D'}}>Raven Pay:</b> Tap to see instructions on how to use Raven Pay {icons.warn}</div>
 
                                     <div className='main_details ravenpay_main_details'>
-                                      <span className='label'>{'Narration'}</span>
                                       <div className='account_number raven_username'>
+                                      <span className='label'>{'Narration'}</span>
                                         <p>{raven_pay?.raven_pay_ref}</p>
                                         <figure
                                           onClick={() => handleCopy(raven_pay?.raven_pay_ref)}
@@ -592,9 +593,9 @@ function App() {
                                           {copied ? <FaCheckCircle /> : icons.copy}
                                         </figure>
                                       </div>
-                                      <span className='label'>{'Username'}</span>
 
                                       <div className='account_name raven_username'>
+                                      <span className='label'>{'Username'}</span>
                                         <p>ravenpay</p>
                                         <figure onClick={() => handleCopy2('ravenpay')}>
                                           {copy2 ? <FaCheckCircle /> : icons.copy}
@@ -634,6 +635,7 @@ function App() {
                             {/* ussd pay view */}
                             <div className={`payment_option_container ${paymentMethod === 'ussd' && 'show'}`}>
                                 <div className='ussd_container'>
+                                  <div style={{marginBottom: '1rem'}}>
                                   <RavenInputField
                                     label='Select preffered bank'
                                     color='light'
@@ -649,12 +651,14 @@ function App() {
                                     selectOption={formatSelectOption(ussd_details?.bank_list)}
                                     id='bank'
                                   />
+                                  </div>
+                                
                                   {ussd && !isUssdLoading && (
                                     <div className='payment_details_wrapper'>
-                                      <div className='note'>Copy the USSD Code and proceed to pay.</div>
-
+                                <div className='note'><b style={{color: '#EA872D'}}>USSD:</b> Copy the USSD code to your keypad and start your transaction</div>
                                       <div className='main_details'>
-                                        <div className='account_number'>
+                                        <div className='account_number raven_username'>
+                                        <span className='label'>{'USSD Code'}</span>
                                           <p>{ussd_code?.ussd_string}</p>
                                           <figure
                                             onClick={() => handleCopy(ussd_code?.ussd_string)}
@@ -664,6 +668,12 @@ function App() {
                                           </figure>
                                         </div>
                                       </div>
+
+                                      <div style={{ textAlign: 'start' }} className='expiry_period'>
+                                      <p>
+                                      <b>Note:</b> If you have any issues with your transactions <b style={{color: '#0B8376'}}>please contact support.</b> 
+                                      </p>
+                                    </div>
                                     </div>
                                   )}
 
@@ -798,6 +808,10 @@ function App() {
                         // countDownTime={3000}
                         />{' '}
                         minutes
+                      </div>
+
+                      <div className="contact_support_msg">
+                        <p>If you have any issues with your transactions <b style={{color: '#755AE2'}}>please contact support.</b></p>
                       </div>
                     </div>
                   )}
