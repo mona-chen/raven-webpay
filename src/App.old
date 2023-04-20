@@ -11,7 +11,7 @@ import limitless from './assets/limitless.png'
 import mCard from './assets/mastercard.png'
 import Countdown from './helpers/coutdown'
 import ErrorModal from './modal/ErrorModal'
-import { FaCheckCircle } from '../node_modules/react-icons/fa/index.esm'
+import { FaCheckCircle } from 'react-icons/fa/index.esm
 import { useDispatch, useSelector } from 'react-redux'
 import {
   getPaymentConfig,

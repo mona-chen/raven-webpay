@@ -6,8 +6,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  display: none;
-  visibility: hidden;
   background-color: aliceblue;
 }
 .raven_webpay_wrapper .secured_by {
@@ -20,7 +18,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  width: 40rem;
+  width: 47rem;
   padding: 1.5rem 0rem;
   max-height: 100vh;
   overflow: hidden;
@@ -100,7 +98,7 @@
   background-color: white;
   padding: 0.2rem;
   border-radius: 50%;
-  box-shadow: 0px 11px 16px #CCCCCC;
+  box-shadow: 0px 4px 8px -2px rgba(51, 51, 51, 0.1), 0px 2px 4px -2px rgba(51, 51, 51, 0.06);
   cursor: pointer;
   align-self: flex-end;
 }
@@ -345,7 +343,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   align-items: center;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .header_details {
@@ -379,8 +377,8 @@
   color: #020202;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
@@ -389,8 +387,9 @@
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo img {
   width: 100%;
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  border-radius: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo figure {
   display: grid;
@@ -401,8 +400,8 @@
   height: fit-content;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .business_logo figure svg {
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper {
   display: flex;
@@ -526,27 +525,33 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 2rem;
   padding: 2rem 2rem;
   overflow: hidden;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .note {
+  display: flex;
+  gap: 0.5rem;
   background: #FFF6ED;
   border-radius: 100px;
   font-size: 1rem;
   font-weight: 400;
   width: -moz-fit-content;
   width: fit-content;
+  margin-bottom: 1rem;
   text-align: start;
-  padding: 0.8rem 2rem;
-  color: #EA872D;
+  padding: 0 2rem;
+  height: 2.8rem;
+  align-items: center;
+  color: #666666;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 0.5rem;
-  margin-top: 2.4rem;
+  padding: 1rem 0;
+  border-top: 0.8px solid #E5E6E6;
+  border-bottom: 0.8px solid #E5E6E6;
   width: 100%;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .bank_name {
@@ -558,7 +563,6 @@
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .account_number {
   display: flex;
   gap: 0.8rem;
-  color: #0B8376;
   flex-direction: row;
   align-items: center;
 }
@@ -590,17 +594,22 @@
   gap: 1rem;
   align-items: center;
 }
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .raven_username .label {
+  color: #666666;
+}
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .raven_username p {
   margin-right: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: #0B8376;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .raven_username svg {
+  display: grid;
+  place-items: center;
   cursor: pointer;
   color: #0B8376;
-  width: 1.5rem !important;
-  height: 1.5rem !important;
+  width: 1.2rem !important;
+  height: 1.2rem !important;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .account_name {
   color: #666666;
@@ -612,6 +621,7 @@
   font-weight: 400;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .ravenpay_main_details {
+  display: flex;
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -620,10 +630,8 @@
   display: flex;
   flex-direction: row;
   gap: 0.8rem;
-  border-top: 1px solid #E5E6E6;
   width: 100%;
   padding-top: 1.2rem;
-  margin-top: 2.4rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .expiry_period p {
   font-size: 1rem;
@@ -673,9 +681,6 @@
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .more_options_toggle p {
   font-size: 1.2rem;
 }
-.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .raven_details_wrapper {
-  margin-top: 2rem;
-}
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .raven_details_wrapper .verify {
   color: #0B8376;
   font-weight: 700;
@@ -693,7 +698,6 @@
   margin-top: 2rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container {
-  margin-top: 2rem;
   width: 100%;
   position: relative;
   z-index: 1;
@@ -809,7 +813,7 @@
 .raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper {
   width: 100%;
   background: #FBFBFB;
-  padding: 6rem 3rem;
+  padding-top: 3rem;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #E5E6E6;
@@ -831,6 +835,21 @@
   text-align: center;
   padding: 0.8rem 2rem;
   color: #EA872D;
+}
+.raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper .contact_support_msg {
+  display: flex;
+  width: 100%;
+  margin-top: 3rem;
+  border-top: 0.8px solid #E5E6E6;
+  padding: 2rem 0;
+  align-items: center;
+}
+.raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper .contact_support_msg p {
+  color: #676767;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+  font-size: 1rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .payment_select_option {
   display: flex;
