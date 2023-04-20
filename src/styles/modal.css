@@ -6,8 +6,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  display: none;
-  visibility: hidden;
   background-color: aliceblue;
 }
 .raven_webpay_wrapper .secured_by {
