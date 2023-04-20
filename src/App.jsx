@@ -53,6 +53,13 @@ function App() {
 
   //end aliases for constanst and states
 
+  // retrieve plugin based configurations
+  const params = new URLSearchParams(location.search);
+  const platform = params.get('platform');
+  const supportedPlatform = platform === ('wordpress' || 'joomla' || 'magento') ? true : false;
+
+  // end plugin configuration
+
   // begin masking function
   const [cardNumber, setCardNumber] = useState('')
   const [expiryDate, setExpiryDate] = useState('')
@@ -217,8 +224,6 @@ function App() {
         }
       }
     }
-
-    // console.log(response, 'card_transaction')
   }
 
   async function retrieveUssdCode(e) {
@@ -406,7 +411,7 @@ function App() {
   const has_keys = Object.keys(config)
 
   return (
-    <div className={`raven_webpay_wrapper ${mode && mode}`}>
+    <div className={`raven_webpay_wrapper ${supportedPlatform && 'modal'}`}>
       <div className='modal_wrapper_container'>
         <div onClick={() => onModalCancel(true)} className='close_btn'>
           {!success && <figure>{icons.close}</figure>}
