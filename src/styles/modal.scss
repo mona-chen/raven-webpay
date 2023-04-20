@@ -387,6 +387,7 @@ $base-padding: 1.2rem;
            .card-input-wrapper {
             overflow: hidden;
             max-height: 0;
+            width: 100%;
             transition: max-height 0.3s linear-bezier(0, 1.05, 0, 1);
             -webkit-transition: max-height 0.5s;
             -moz-transition: max-height 0.5s;
@@ -397,6 +398,12 @@ $base-padding: 1.2rem;
 
             .card-input-end {
                 // margin-bottom: 2rem;
+                justify-content: space-between;
+
+                .input_group {
+                    width: 100%;
+                }
+
             }
 
             &.show {
@@ -1192,7 +1199,7 @@ $base-padding: 1.2rem;
     left: 0;
     margin-left: auto; 
     margin-right: auto; 
-    background-color: #0202022b;
+    background-color: #002c493c;
     backdrop-filter: blur(8px);
 }
 
@@ -1205,4 +1212,9 @@ $base-padding: 1.2rem;
   
 }
 
-
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .modal_wrapper_container {
+        width: 43rem !important;
+    }
+  }

@@ -247,6 +247,8 @@ function App() {
     }, 10000)
   }, [trx])
 
+  console.log(cvv, 'The CVV')
+
   // check card transaction status
   let cardint
   const checkCardTrxStatus = useCallback(
