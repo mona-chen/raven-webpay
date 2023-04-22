@@ -32,8 +32,13 @@ import parse from 'html-react-parser'
 
 function App() {
   const dispatch = useDispatch()
-  let int
 
+   //enable cross-platform communication with sdks and plugins
+   function postMessage(type, message){
+    window.parent.postMessage({type: type, message: message}, "*");
+  }
+
+  let int
   // retrieve redux states
   const {
     config,
@@ -50,14 +55,12 @@ function App() {
 
   // aliases for constanst and states
   let prefferedGateway = config?.payment_methods
-
   //end aliases for constanst and states
 
   // retrieve plugin based configurations
   const params = new URLSearchParams(location.search);
   const platform = params.get('platform');
-  const supportedPlatform = platform === ('wordpress' || 'joomla' || 'magento') ? true : false;
-
+  const supportedPlatform = platform === ('wordpress' || 'joomla' || 'magento' || 'atlas' || 'banking') ? true : false;
   // end plugin configuration
 
   // begin masking function
@@ -178,8 +181,7 @@ function App() {
   // handle api calls
   async function getConfig() {
     await dispatch(getPaymentConfig(trx))
-    // if (config) console.log(config)
-    // console.log(config, 'ieni')
+
     inject()
   }
 
@@ -344,7 +346,13 @@ function App() {
   //effect call for window ref 
   useEffect(() => {
     getConfig()
-  }, [inlineRef])
+  }, [inlineRef]
+  )
+
+  // effect call for cross-platform communication
+  useEffect(() => {
+    if (success) postMessage('onSuccess', 'Payment successful')
+  }, [success])
 
   //end effects
 
@@ -400,6 +408,7 @@ function App() {
       setCallbackUrl(
         `${config?.redirect_url}?trx_ref=${config?.trx_ref}&merchant_ref=${config?.merchant_ref}&status=${config?.status}`,
       ) 
+      postMessage('payment_data', config)
   }, [config])
 
   const bankCountDown = () => {
@@ -409,11 +418,6 @@ function App() {
     return { min, sec }
   }
   const has_keys = Object.keys(config)
-
-  // post messages to sdk or plugin users
-  function postMessage(message){
-    window.parent.postMessage(message, "*");
-  }
 
   return (
     <div className={`raven_webpay_wrapper ${supportedPlatform && 'modal'}`}>
@@ -978,7 +982,7 @@ function App() {
           bigText={'Cancel Payment'}
           smallText={'Are you sure you want to cancel this payment request, please confirm before proceeding.'}
           btnText={'Close modal'}
-          onClick={() => {navigate(callbackUrl), setClosed(true)}}
+          onClick={() => {postMessage('onclose', 'Payment window closed'), setClosed(true),  navigate(callbackUrl)}}
           onCancel={() => onModalCancel(false)}
         />
       </RavenModal>
