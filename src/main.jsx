@@ -12,10 +12,10 @@ document.body.appendChild(iframe);
 
 ReactDOM.createRoot(document.getElementById('raven_webpay_wrapper')).render(
   
-  // <React.StrictMode>
+  <React.StrictMode>
   <Provider store={store}>
     <RavenToast />
     <App />
   </Provider>,
-  // </React.StrictMode>,
+</React.StrictMode>,
 )
