@@ -247,8 +247,6 @@ function App() {
     }, 10000)
   }, [trx])
 
-  console.log(cvv, 'The CVV')
-
   // check card transaction status
   let cardint
   const checkCardTrxStatus = useCallback(
@@ -412,6 +410,11 @@ function App() {
   }
   const has_keys = Object.keys(config)
 
+  // post messages to sdk or plugin users
+  function postMessage(message){
+    window.parent.postMessage(message, "*");
+  }
+
   return (
     <div className={`raven_webpay_wrapper ${supportedPlatform && 'modal'}`}>
       <div className='modal_wrapper_container'>
@@ -437,7 +440,7 @@ function App() {
                           ''}
                         </span>
                       </div>
-                      <div className='business_logo'>
+                      <div onClick={() => postMessage('This Window oshee')} className='business_logo'>
                         <figure>
                         {icons.logo_icon}
 
