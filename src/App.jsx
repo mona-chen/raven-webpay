@@ -261,7 +261,6 @@ function App() {
 
           if (call?.payload?.data?.status === 'successful') {
             setSuccess(true)
-            postMessage('onSuccess', call?.payload?.data)
           }
           if (call?.payload?.data?.status === 'successful') return clearInterval(cardint)
           if (call?.payload?.data?.status === 'failed') return clearInterval(cardint)
@@ -306,7 +305,6 @@ function App() {
   useEffect(() => {
     if (transferStatus.is_paid === 1) {
       setSuccess(true)
-      postMessage('onSuccess', transferStatus.data)
       setPaymentMethod(null)
       clearInterval(int)
     }
@@ -336,7 +334,6 @@ function App() {
   useEffect(() => {
     if (card_transaction_status?.data?.status == 'successful') {
       setSuccess(true)
-      postMessage('onSuccess', card_transaction_status?.data)
     }
 
     if (card_transaction_status?.data?.status == 'failed') {
@@ -353,9 +350,9 @@ function App() {
   )
 
   // effect call for cross-platform communication
-  // useEffect(() => {
-  //   if (success) postMessage('onSuccess', 'Payment successful')
-  // }, [success])
+  useEffect(() => {
+    if (success) getConfig(); postMessage('onSuccess', config)
+  }, [success])
 
   //end effects
 
