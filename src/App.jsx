@@ -261,6 +261,7 @@ function App() {
 
           if (call?.payload?.data?.status === 'successful') {
             setSuccess(true)
+            postMessage('onSuccess', call?.payload?.data)
           }
           if (call?.payload?.data?.status === 'successful') return clearInterval(cardint)
           if (call?.payload?.data?.status === 'failed') return clearInterval(cardint)
@@ -305,6 +306,7 @@ function App() {
   useEffect(() => {
     if (transferStatus.is_paid === 1) {
       setSuccess(true)
+      postMessage('onSuccess', transferStatus.data)
       setPaymentMethod(null)
       clearInterval(int)
     }
@@ -334,6 +336,7 @@ function App() {
   useEffect(() => {
     if (card_transaction_status?.data?.status == 'successful') {
       setSuccess(true)
+      postMessage('onSuccess', card_transaction_status?.data)
     }
 
     if (card_transaction_status?.data?.status == 'failed') {
@@ -350,9 +353,9 @@ function App() {
   )
 
   // effect call for cross-platform communication
-  useEffect(() => {
-    if (success) postMessage('onSuccess', 'Payment successful')
-  }, [success])
+  // useEffect(() => {
+  //   if (success) postMessage('onSuccess', 'Payment successful')
+  // }, [success])
 
   //end effects
 
@@ -422,9 +425,10 @@ function App() {
   return (
     <div className={`raven_webpay_wrapper ${supportedPlatform && 'modal'}`}>
       <div className='modal_wrapper_container'>
-        <div onClick={() => onModalCancel(true)} className='close_btn'>
-          {!success && <figure>{icons.close}</figure>}
+      {!success && <div onClick={() => onModalCancel(true)} className='close_btn'>
+           <figure>{icons.close}</figure>
         </div>
+        }
 
         {!success && (
           <>
@@ -444,7 +448,7 @@ function App() {
                           ''}
                         </span>
                       </div>
-                      <div onClick={() => postMessage('This Window oshee')} className='business_logo'>
+                      <div className='business_logo'>
                         <figure>
                         {icons.logo_icon}
 
@@ -966,7 +970,7 @@ function App() {
             <div className='button_wrapper'>
               <RavenButton
                 className='btn-outline-white-light success_btn'
-                onClick={() => navigate(callbackUrl)}
+                onClick={() => {postMessage('onclose', 'transaction_success'),navigate(callbackUrl)}}
                 label='Close Payment'
               />
             </div>

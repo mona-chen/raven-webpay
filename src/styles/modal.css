@@ -13,6 +13,10 @@
   display: grid;
   place-items: center;
 }
+.raven_webpay_wrapper .secured_by svg {
+  background-color: rgba(255, 255, 255, 0.4196078431);
+  border-radius: 0.8rem;
+}
 .raven_webpay_wrapper .modal_wrapper_container {
   display: flex;
   flex-direction: column;
