@@ -425,9 +425,10 @@ function App() {
   return (
     <div className={`raven_webpay_wrapper ${supportedPlatform && 'modal'}`}>
       <div className='modal_wrapper_container'>
-        <div onClick={() => onModalCancel(true)} className='close_btn'>
-          {!success && <figure>{icons.close}</figure>}
+      {!success && <div onClick={() => onModalCancel(true)} className='close_btn'>
+           <figure>{icons.close}</figure>
         </div>
+        }
 
         {!success && (
           <>
