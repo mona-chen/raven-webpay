@@ -408,7 +408,7 @@ function App() {
       setCallbackUrl(
         `${config?.redirect_url}?trx_ref=${config?.trx_ref}&merchant_ref=${config?.merchant_ref}&status=${config?.status}`,
       ) 
-      postMessage('payment_data', config)
+      if (!success) postMessage('onLoad', config)
   }, [config])
 
   const bankCountDown = () => {
