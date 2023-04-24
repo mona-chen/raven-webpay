@@ -38,6 +38,10 @@ function App() {
     window.parent.postMessage({type: type, message: message}, "*");
   }
 
+  //custom javascript sleep function
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+
   let int
   // retrieve redux states
   const {
@@ -187,6 +191,7 @@ function App() {
 
 
   async function initCardPayment() {
+    setIsLoading(true)
     const payload = {
       trx_ref: trx,
       currency: 'NGN',
@@ -351,7 +356,13 @@ function App() {
 
   // effect call for cross-platform communication
   useEffect(() => {
-    if (success) getConfig(); postMessage('onSuccess', config)
+    async()=>{
+      if (success) {
+        getConfig();
+        sleep(1000); 
+        postMessage('onSuccess', config
+        )}
+    }
   }, [success])
 
   //end effects
@@ -454,25 +465,7 @@ function App() {
 
                       </div>
                     </div>
-                    {/* <p>
-                      {stage === 'main' ? (
-                        'Select Payment Method'
-                      ) : (
-                        <span
-                          onClick={() => {
-                            stage === 'pin'
-                              ? setStage('main')
-                              : stage === 'confirming-transaction'
-                              ? setStage('main')
-                              : ''
-                          }}
-                          className='back-icon'
-                        >
-                          <figure>{icons.back}</figure>
-                          Back
-                        </span>
-                      )}
-                    </p> */}
+                  
                   </div>
 
                   {/* Header ends here */}
