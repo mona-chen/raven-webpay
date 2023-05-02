@@ -265,7 +265,9 @@ function App() {
           let call = await dispatch(verifyCardTrx(card_ref))
 
           if (call?.payload?.data?.status === 'successful') {
+            getConfig()
             setSuccess(true)
+            
           }
           if (call?.payload?.data?.status === 'successful') return clearInterval(cardint)
           if (call?.payload?.data?.status === 'failed') return clearInterval(cardint)
@@ -309,6 +311,7 @@ function App() {
   // effect calls checking transfer status
   useEffect(() => {
     if (transferStatus.is_paid === 1) {
+      getConfig()
       setSuccess(true)
       setPaymentMethod(null)
       clearInterval(int)
@@ -338,6 +341,7 @@ function App() {
 
   useEffect(() => {
     if (card_transaction_status?.data?.status == 'successful') {
+      getConfig()
       setSuccess(true)
     }
 
@@ -356,13 +360,10 @@ function App() {
 
   // effect call for cross-platform communication
   useEffect(() => {
-    async()=>{
-      if (success) {
-        getConfig();
-        sleep(1000); 
+      if (success === true) {
+        console.log("Success:", config);
         postMessage('onSuccess', config
         )}
-    }
   }, [success])
 
   //end effects
@@ -960,7 +961,7 @@ function App() {
             <div className='button_wrapper'>
               <RavenButton
                 className='btn-outline-white-light success_btn'
-                onClick={() => {postMessage('onclose', 'transaction_success'),navigate(callbackUrl)}}
+                onClick={() => {postMessage('onclose', 'transaction_success', config),navigate(callbackUrl)}}
                 label='Close Payment'
               />
             </div>
