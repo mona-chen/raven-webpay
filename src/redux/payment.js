@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../helpers/axios'
-import { get } from '../../node_modules/@jridgewell/set-array/src/set-array'
 
 export const getPaymentConfig = createAsyncThunk('/get_payment_config', async (payload, thunkAPI) => {
   try {
@@ -34,6 +33,20 @@ export const initiateCardTransaction = createAsyncThunk('/get_payment_config', a
 
     if (data?.data?.status === 'success') {
       // await thunkAPI.dispatch(setConfig(data?.data?.data));
+      await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
+    }
+    return data?.data
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+export const processCardToken = createAsyncThunk('/init_3ds_transaction', async (payload, thunkAPI) => {
+  try {
+    const data = await api.post(`/webpay/web/verify_card_token`, payload)
+
+    if (data?.data?.status === 'success') {
+      // await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
     }
     return data?.data
   } catch (error) {
@@ -243,6 +256,19 @@ export const payment = createSlice({
       state.loading = false
     },
     [initiateUssdPayment.rejected]: (state) => {
+      // localStorage.removeItem("token");
+      state.loading = false
+      state.isAuth = false
+      state = null
+    },
+
+    [processCardToken.pending]: (state) => {
+      state.loading = true
+    },
+    [processCardToken.fulfilled]: (state) => {
+      state.loading = false
+    },
+    [processCardToken.rejected]: (state) => {
       // localStorage.removeItem("token");
       state.loading = false
       state.isAuth = false
