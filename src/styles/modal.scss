@@ -668,10 +668,12 @@ $base-padding: 1.2rem;
                                 height: 70%;
                             }
                         }
+  
+                    }
 
-                        
-
-                       
+                    .verve_card {
+                        right: 2%;
+                        top: 19.2%;
                     }
 
                     
@@ -733,7 +735,14 @@ $base-padding: 1.2rem;
                                 height: 2.8rem;
                                 align-items: center;
                                 color: #666666;
-                            }                
+                            } 
+                            
+                            .pin-note {
+                                width: 100%;
+                                justify-content: center;
+                                align-items: center;
+                                margin-top: 1rem;
+                            }
     
                         .main_details {
                             display: flex;
@@ -986,7 +995,9 @@ $base-padding: 1.2rem;
                     place-items: center;
                     border-radius: 50%;
 
-                    img {
+                    svg {
+                        width: 100%;
+                        height: 100%;  
                         border-radius: 50%;
                         object-fit: contain;
                     }
@@ -1028,6 +1039,30 @@ $base-padding: 1.2rem;
                     opacity: 0.5;
                 }
             }
+
+            .note {
+                display: flex;
+                gap: 0.5rem;
+                    // background: #FFF6ED;
+                    border-radius: 100px;
+                    font-size: 1rem;
+                    font-weight: 400;
+                    width: -moz-fit-content;
+                    width: fit-content;
+                    margin-bottom: 1rem;
+                    text-align: start;
+                    padding: 0 2rem;
+                    height: 2.8rem;
+                    align-items: center;
+                    color: #666666;
+                } 
+                
+                .pin-note {
+                    width: 100%;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 1rem;
+                }
         }
 
         .failed_transaction_wrapper {
@@ -1215,6 +1250,15 @@ $base-padding: 1.2rem;
         margin: 0 !important;
     }
   
+}
+
+.pin-btn-wrapper {
+    width: 100%;
+    margin-top: 2rem;
+
+    .pin-btn {
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 768px) {

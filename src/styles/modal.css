@@ -508,6 +508,10 @@
   width: 70%;
   height: 70%;
 }
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper .verve_card {
+  right: 2%;
+  top: 19.2%;
+}
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_btn {
   margin: 2rem 0 1rem 0;
   width: 100%;
@@ -554,6 +558,12 @@
   height: 2.8rem;
   align-items: center;
   color: #666666;
+}
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .pin-note {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details {
   display: flex;
@@ -749,7 +759,9 @@
   place-items: center;
   border-radius: 50%;
 }
-.raven_webpay_wrapper .modal_wrapper_container .pin_session_wrapper .method_summary figure img {
+.raven_webpay_wrapper .modal_wrapper_container .pin_session_wrapper .method_summary figure svg {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   -o-object-fit: contain;
      object-fit: contain;
@@ -777,6 +789,27 @@
   text-transform: uppercase;
   color: #333333;
   opacity: 0.5;
+}
+.raven_webpay_wrapper .modal_wrapper_container .pin_session_wrapper .note {
+  display: flex;
+  gap: 0.5rem;
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: 400;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-bottom: 1rem;
+  text-align: start;
+  padding: 0 2rem;
+  height: 2.8rem;
+  align-items: center;
+  color: #666666;
+}
+.raven_webpay_wrapper .modal_wrapper_container .pin_session_wrapper .pin-note {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .failed_transaction_wrapper {
   width: 100%;
@@ -940,6 +973,14 @@
 .raven-modal-content-wrap .content {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.pin-btn-wrapper {
+  width: 100%;
+  margin-top: 2rem;
+}
+.pin-btn-wrapper .pin-btn {
+  width: 100%;
 }
 
 @media only screen and (max-width: 768px) {

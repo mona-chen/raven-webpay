@@ -26,6 +26,7 @@ import {
   getUssdCode,
   verifyCardTrx,
   initRavenPay,
+  processCardToken,
 } from './redux/payment'
 import { formatNumWithCommaNaira, generateReference } from './helpers/helpers'
 import parse from 'html-react-parser'
@@ -74,7 +75,7 @@ function App() {
   const [paymentMethod, setPaymentMethod] = useState('card')
   // const [moreOptions, setMoreOptions] = useState(prefferedGateway?.length > 4 ? false : true)
   const [stage, setStage] = useState('main')
-  const [pinVal, onChange] = useState('')
+  const [pinVal, onPinChange] = useState('')
   const [pin, onComplete] = useState('')
   const [errorModal, onModalCancel] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -92,6 +93,7 @@ function App() {
   const [inlineRef, setInlineRef] = useState(null)
   const [closed, setClosed] = useState(false)
   const [mode, setMode] = useState(null)
+  const [cardUserRef, setCardUserRef] = useState(null)
 
 
   // programmatically inject the app to document body
@@ -168,6 +170,7 @@ function App() {
 
   const userRef = generateReference()
   // end transaction ref getter
+  
 
   // function derived from 3ds authentication
   function trigger3ds() {
@@ -185,12 +188,26 @@ function App() {
   // handle api calls
   async function getConfig() {
     await dispatch(getPaymentConfig(trx))
-
     inject()
+  }
+
+  async function sendCardToken(){
+
+   let response = await dispatch(processCardToken({
+      pay_ref: cardUserRef,
+      token: pinVal,
+    }))
+
+   if (response.payload.status === 'success') {
+    setStage('confirming-transaction')
+    checkCardTrxStatus(card_ref)
+  }
+    
   }
 
 
   async function initCardPayment() {
+    setCardUserRef(userRef) // save the ref for non 3ds repeated use
     setIsLoading(true)
     const payload = {
       trx_ref: trx,
@@ -200,6 +217,7 @@ function App() {
       expiry_month: expiryDate.split('/')[0],
       expiry_year: expiryDate.split('/')[1],
       pay_ref: userRef,
+      pin: pinVal
     }
 
     const response = await dispatch(initiateCardTransaction(payload))
@@ -229,7 +247,10 @@ function App() {
         if (viewFrame?.payload?.status === 'success') {
           setIsLoading(true)
         }
-      }
+      } else (
+        setStage('pin')
+      )
+      
     }
   }
 
@@ -255,7 +276,7 @@ function App() {
   }, [trx])
 
   // check card transaction status
-  let cardint
+  let cardint;
   const checkCardTrxStatus = useCallback(
     (card_ref) => {
       clearInterval(cardint)
@@ -263,6 +284,7 @@ function App() {
       cardint = setInterval(
         async (card_ref) => {
           let call = await dispatch(verifyCardTrx(card_ref))
+          console.log(card_ref, ":Pay Ref within useCallback")
 
           if (call?.payload?.data?.status === 'successful') {
             getConfig()
@@ -276,7 +298,7 @@ function App() {
         [card_ref],
       )
     },
-    [cardRef],
+    [cardRef, card_ref],
   )
 
   // api calls use effect
@@ -338,6 +360,7 @@ function App() {
       }, 500)
     }
   }, [viewFrame])
+  
 
   useEffect(() => {
     if (card_transaction_status?.data?.status == 'successful') {
@@ -383,6 +406,8 @@ function App() {
       setCardType('American Express')
     } else if (/^6(?:011|5)/.test(rawValue)) {
       setCardType('Discover')
+    } else if (/^5[6-9]|^506[0-9]|^6500[0-9]/.test(rawValue)) {
+      setCardType('Verve')
     } else {
       setCardType(null)
     }
@@ -457,7 +482,7 @@ function App() {
                           ''}
                         </span>
                       </div>
-                      <div className='business_logo'>
+                      <div onClick={() => setStage('pin')} className='business_logo'>
                         <figure>
                         {icons.logo_icon}
 
@@ -491,12 +516,12 @@ function App() {
                                 className='form-input'
                                 name='card-number'
                                 id='card-number'
-                                maxLength='19'
+                                maxLength='25'
                                 autoComplete='cc-number'
                                 value={cardNumber}
                                 onChange={handleCardNumberChange}
                               />
-                              <div className={cardType && `card_icon`}>
+                              <div className={cardType === 'Verve' ? 'card_icon verve_card' : `card_icon` }>
                               <figure>
                                 {cardType === 'Mastercard'
                                   ? icons.mastercard
@@ -552,6 +577,23 @@ function App() {
                                 
                               </div>
                             </div>
+                            {cardType === 'Verve' &&
+
+                            <div className='input_group '>
+                            <label className='form-label' htmlFor='card-number'>
+                              Card Pin
+                            </label>
+                            <RavenInputField 
+                            type='pin'
+                            pinFieldNumber={4}
+                            color={'green-light'}
+                            value={pinVal}
+                            onChange={(e) => onPinChange(e)}
+                            />
+                            </div>
+                            
+                            }
+                            
                           </div>
                           {/* Card input ends here */}
 
@@ -831,7 +873,7 @@ function App() {
                     <div className='pin_session_wrapper'>
                       <div className='method_summary'>
                         <figure>
-                          <img src={mCard} alt='' />
+                          {icons.verve}
                         </figure>
 
                         <div className='method_details'>
@@ -875,7 +917,7 @@ function App() {
                               className={`${`pin_field pin_field_black-light`} ${completePin && 'pin_field_completed'}`}
                               onChange={(num) => {
                                 setCompletePin(false)
-                                onChange(num)
+                                onPinChange(num)
                               }}
                               onComplete={(num) => {
                                 onComplete(num)
@@ -888,24 +930,40 @@ function App() {
                               // ref={ref}
                             />
                           </div>
+
                           {/* count down start */}
-                          {/* {showCountDown && (
-  <div className="count-down-box">
-    <p className="text">{timeOut ? "Time out" : "Code expires in"}</p>
-  
-  <p className="count">
-  <Countdown
-      count={(e) => setTimeOut(e === "00:00" ? true : false)} 
-      countDownTime={countDownTime}
-    />
-  </p>
-    
-  </div>
-)} */}
+
+                          <div>
+
+                          <div className='note pin-note'>
+                        Code expires in{' '}
+                        <Countdown
+                        // count={(e) => setTimeOut(e === "00:00" ? true : false)}
+                        // countDownTime={3000}
+                        />{' '}
+                        minutes
+                      </div>
+                          
+                         </div>
+                  
 
                           {/* count down end */}
                         </div>
                         {/* pin group end */}
+                      </div>
+
+                      {/* Button Action */}
+                      <div className="pin-btn-wrapper">
+                          <RavenButton 
+                          disabled={(stage === 'pin' && pinVal.length !== 6)}
+                          className='pin-btn'
+                          name='card-pin' 
+                          color={'green-light'}
+                          loading={loading}
+                          onClick={sendCardToken}
+                          label='Confirm PIN'
+                          // size={"small"}
+                          />
                       </div>
                     </div>
                   )}
