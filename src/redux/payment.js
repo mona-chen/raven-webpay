@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { toast } from 'raven-bank-ui'
 import api from '../helpers/axios'
 
 export const getPaymentConfig = createAsyncThunk('/get_payment_config', async (payload, thunkAPI) => {
@@ -7,6 +8,8 @@ export const getPaymentConfig = createAsyncThunk('/get_payment_config', async (p
 
     if (data?.data?.status === 'success') {
       await thunkAPI.dispatch(setConfig(data?.data?.data))
+    } else {
+      toast.error('Something went wrong fetching this payment data')
     }
     return data?.data
   } catch (error) {
@@ -29,11 +32,13 @@ export const confirmTransfer = createAsyncThunk('/get_payment_config', async (pa
 
 export const initiateCardTransaction = createAsyncThunk('/get_payment_config', async (payload, thunkAPI) => {
   try {
-    const data = await api.post(`/webpay/web/initiate_card_transaction`, payload)
+    const data = await api.post('/webpay/web/initiate_card_transaction', payload)
 
     if (data?.data?.status === 'success') {
       // await thunkAPI.dispatch(setConfig(data?.data?.data));
       await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
+    } else {
+      toast.error('Unable to initiate card transaction, please try again')
     }
     return data?.data
   } catch (error) {
@@ -41,12 +46,14 @@ export const initiateCardTransaction = createAsyncThunk('/get_payment_config', a
   }
 })
 
-export const processCardToken = createAsyncThunk('/init_3ds_transaction', async (payload, thunkAPI) => {
+export const processCardToken = createAsyncThunk('/init_3ds_transaction', async (payload, _thunkAPI) => {
   try {
-    const data = await api.post(`/webpay/web/verify_card_token`, payload)
+    const data = await api.post('/webpay/web/verify_card_token', payload)
 
     if (data?.data?.status === 'success') {
       // await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
+    } else {
+      toast.error("We couldn't process your token, token is expired or invalid")
     }
     return data?.data
   } catch (error) {
@@ -56,10 +63,12 @@ export const processCardToken = createAsyncThunk('/init_3ds_transaction', async 
 
 export const initiate3dsTransaction = createAsyncThunk('/init_3ds_transaction', async (payload, thunkAPI) => {
   try {
-    const data = await api.post(`/webpay/web/initiate_card_transaction_3ds`, payload)
+    const data = await api.post('/webpay/web/initiate_card_transaction_3ds', payload)
 
     if (data?.data?.status === 'success') {
       await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
+    } else {
+      toast.error('Unable to initiate card transaction, please try again')
     }
     return data?.data
   } catch (error) {
@@ -86,6 +95,8 @@ export const initiateUssdPayment = createAsyncThunk('/initiate_ussd_payment', as
 
     if (data?.data?.status === 'success') {
       await thunkAPI.dispatch(setUssdDetails(data?.data?.data))
+    } else {
+      toast.error('An error occurred, please try again')
     }
     return data?.data
   } catch (error) {
@@ -125,6 +136,8 @@ export const initRavenPay = createAsyncThunk('/verify_card_transaction', async (
 
     if (data?.data?.status === 'success') {
       await thunkAPI.dispatch(setRavenPayStatus(data?.data?.data))
+    } else {
+      toast.error('Something went wrong, please try again')
     }
     return data?.data
   } catch (error) {
@@ -159,27 +172,27 @@ export const payment = createSlice({
     },
 
     setTransferStatus: (state, action) => {
-      (state.transferStatus = action.payload), (state.isAuth = false)
+      ;(state.transferStatus = action.payload), (state.isAuth = false)
     },
 
     setCardTransactionStatus: (state, action) => {
-      (state.card_transaction_status = action.payload), (state.isAuth = false)
+      ;(state.card_transaction_status = action.payload), (state.isAuth = false)
     },
 
     setUssdDetails: (state, action) => {
-      (state.ussd_details = action.payload), (state.isAuth = false)
+      ;(state.ussd_details = action.payload), (state.isAuth = false)
     },
 
     setUssd: (state, action) => {
-      (state.ussd_code = action.payload), (state.isAuth = false)
+      ;(state.ussd_code = action.payload), (state.isAuth = false)
     },
 
     setCardRef: (state, action) => {
-      (state.card_ref = action.payload), (state.isAuth = false)
+      ;(state.card_ref = action.payload), (state.isAuth = false)
     },
 
     setRavenPayStatus: (state, action) => {
-      (state.raven_pay = action.payload), (state.isAuth = false)
+      ;(state.raven_pay = action.payload), (state.isAuth = false)
     },
   },
 
@@ -230,6 +243,19 @@ export const payment = createSlice({
       state.loading = false
     },
     [initiate3dsTransaction.rejected]: (state) => {
+      // localStorage.removeItem("token");
+      state.loading = false
+      state.isAuth = false
+      state = null
+    },
+
+    [initiateCardTransaction.pending]: (state) => {
+      state.loading = true
+    },
+    [initiateCardTransaction.fulfilled]: (state) => {
+      state.loading = false
+    },
+    [initiateCardTransaction.rejected]: (state) => {
       // localStorage.removeItem("token");
       state.loading = false
       state.isAuth = false
