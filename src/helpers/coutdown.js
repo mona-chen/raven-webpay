@@ -25,14 +25,14 @@ const Countdown = (props) => {
   }
 
   const startTimer = (e) => {
-    let { total, hours, minutes, seconds } = getTimeRemaining(e)
+    const { total, minutes, seconds } = getTimeRemaining(e)
     if (total >= 0) {
       // update the timer
       // check if less than 10 then we need to
       // add '0' at the beginning of the variable
       setTimer(
         // (hours > 9 ? hours : '0' + hours) + ':' +
-        (minutes > 9 ? minutes : '0' + minutes) + ':' + (seconds > 9 ? seconds : '0' + seconds),
+        `${minutes > 9 ? minutes : `0${minutes}`}:${seconds > 9 ? seconds : `0${seconds}`}`,
       )
     }
   }
@@ -53,7 +53,7 @@ const Countdown = (props) => {
   }
 
   const getDeadTime = () => {
-    let deadline = new Date()
+    const deadline = new Date()
 
     // This is where you need to adjust if
     // you entend to add more time
@@ -74,9 +74,6 @@ const Countdown = (props) => {
   // the countdown is via action event from the
   // button first we create function to be called
   // by the button
-  const onClickReset = () => {
-    clearTimer(getDeadTime())
-  }
 
   props.count ? props.count(timer) : ''
 

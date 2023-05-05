@@ -34,14 +34,13 @@ import parse from 'html-react-parser'
 function App() {
   const dispatch = useDispatch()
 
-   //enable cross-platform communication with sdks and plugins
-   function postMessage(type, message){
-    window.parent.postMessage({type: type, message: message}, "*");
+  //enable cross-platform communication with sdks and plugins
+  function postMessage(type, message) {
+    window.parent.postMessage({ type: type, message: message }, '*')
   }
 
   //custom javascript sleep function
-  const sleep = ms => new Promise(r => setTimeout(r, ms));
-
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
   let int
   // retrieve redux states
@@ -63,9 +62,9 @@ function App() {
   //end aliases for constanst and states
 
   // retrieve plugin based configurations
-  const params = new URLSearchParams(location.search);
-  const platform = params.get('platform');
-  const supportedPlatform = platform === ('wordpress' || 'joomla' || 'magento' || 'atlas' || 'banking') ? true : false;
+  const params = new URLSearchParams(location.search)
+  const platform = params.get('platform')
+  const supportedPlatform = platform === ('wordpress' || 'joomla' || 'magento' || 'atlas' || 'banking') ? true : false
   // end plugin configuration
 
   // begin masking function
@@ -95,13 +94,12 @@ function App() {
   const [mode, setMode] = useState(null)
   const [cardUserRef, setCardUserRef] = useState(null)
 
-
   // programmatically inject the app to document body
 
   const inject = () => {
-    const ravenpaydiv = document.createElement("div");
-    ravenpaydiv.id = "raven_webpay_wrapper";
-    document.body.appendChild(ravenpaydiv);
+    const ravenpaydiv = document.createElement('div')
+    ravenpaydiv.id = 'raven_webpay_wrapper'
+    document.body.appendChild(ravenpaydiv)
   }
 
   //always reset value on select change
@@ -159,18 +157,16 @@ function App() {
     mode: (e) => {
       setMode(e)
       return e
-    }
+    },
   }
   // end window object
 
-
   // get transaction ref from url
   const ref = window.location.search
-  let trx = inlineRef ? inlineRef : ref.split('=')[1] 
+  let trx = inlineRef ? inlineRef : ref.split('=')[1]
 
   const userRef = generateReference()
   // end transaction ref getter
-  
 
   // function derived from 3ds authentication
   function trigger3ds() {
@@ -191,20 +187,19 @@ function App() {
     inject()
   }
 
-  async function sendCardToken(){
+  async function sendCardToken() {
+    let response = await dispatch(
+      processCardToken({
+        pay_ref: cardUserRef,
+        token: pinVal,
+      }),
+    )
 
-   let response = await dispatch(processCardToken({
-      pay_ref: cardUserRef,
-      token: pinVal,
-    }))
-
-   if (response.payload.status === 'success') {
-    setStage('confirming-transaction')
-    checkCardTrxStatus(card_ref)
+    if (response.payload.status === 'success') {
+      setStage('confirming-transaction')
+      checkCardTrxStatus(card_ref)
+    }
   }
-    
-  }
-
 
   async function initCardPayment() {
     setCardUserRef(userRef) // save the ref for non 3ds repeated use
@@ -217,7 +212,7 @@ function App() {
       expiry_month: expiryDate.split('/')[0],
       expiry_year: expiryDate.split('/')[1],
       pay_ref: userRef,
-      pin: pinVal
+      pin: pinVal,
     }
 
     const response = await dispatch(initiateCardTransaction(payload))
@@ -247,10 +242,9 @@ function App() {
         if (viewFrame?.payload?.status === 'success') {
           setIsLoading(true)
         }
-      } else (
-        setStage('pin')
-      )
-      
+      } else setStage('pin')
+    } else {
+      setIsLoading(false)
     }
   }
 
@@ -265,18 +259,21 @@ function App() {
 
   // document.querySelector('.external_view_wrapper')?.append(viewFrame?.payload?.data?.data);
 
-  const checkTransferStatus = useCallback((success) => {
-    clearInterval(int)
+  const checkTransferStatus = useCallback(
+    (success) => {
+      clearInterval(int)
 
-    int = setInterval(async () => {
-      let call = await dispatch(confirmTransfer(trx))
-      if (call?.payload?.data?.status === 'successful') return clearInterval(cardint)
-      if (success) return clearInterval(int)
-    }, 10000)
-  }, [trx])
+      int = setInterval(async () => {
+        let call = await dispatch(confirmTransfer(trx))
+        if (call?.payload?.data?.status === 'successful') return clearInterval(cardint)
+        if (success) return clearInterval(int)
+      }, 10000)
+    },
+    [trx],
+  )
 
   // check card transaction status
-  let cardint;
+  let cardint
   const checkCardTrxStatus = useCallback(
     (card_ref) => {
       clearInterval(cardint)
@@ -284,12 +281,11 @@ function App() {
       cardint = setInterval(
         async (card_ref) => {
           let call = await dispatch(verifyCardTrx(card_ref))
-          console.log(card_ref, ":Pay Ref within useCallback")
+          // console.log(card_ref, ":Pay Ref within useCallback")
 
           if (call?.payload?.data?.status === 'successful') {
             getConfig()
             setSuccess(true)
-            
           }
           if (call?.payload?.data?.status === 'successful') return clearInterval(cardint)
           if (call?.payload?.data?.status === 'failed') return clearInterval(cardint)
@@ -308,7 +304,7 @@ function App() {
 
   // effect calls for transfer
   useEffect(() => {
-    if (!bank) {
+    if (!bank && paymentMethod === 'transfer') {
       getBank()
     }
 
@@ -338,7 +334,6 @@ function App() {
       setPaymentMethod(null)
       clearInterval(int)
     }
-
   }, [transferStatus])
 
   // effect calls to init ussd
@@ -360,7 +355,6 @@ function App() {
       }, 500)
     }
   }, [viewFrame])
-  
 
   useEffect(() => {
     if (card_transaction_status?.data?.status == 'successful') {
@@ -374,19 +368,17 @@ function App() {
     }
   }, [card_transaction_status, success])
 
-
-  //effect call for window ref 
+  //effect call for window ref
   useEffect(() => {
     getConfig()
-  }, [inlineRef]
-  )
+  }, [inlineRef])
 
   // effect call for cross-platform communication
   useEffect(() => {
-      if (success === true) {
-        console.log("Success:", config);
-        postMessage('onSuccess', config
-        )}
+    if (success === true) {
+      // console.log("Success:", config);
+      postMessage('onSuccess', config)
+    }
   }, [success])
 
   //end effects
@@ -444,8 +436,8 @@ function App() {
     if (config?.redirect_url !== null)
       setCallbackUrl(
         `${config?.redirect_url}?trx_ref=${config?.trx_ref}&merchant_ref=${config?.merchant_ref}&status=${config?.status}`,
-      ) 
-      if (!success) postMessage('onLoad', config)
+      )
+    if (!success) postMessage('onLoad', config)
   }, [config])
 
   const bankCountDown = () => {
@@ -459,10 +451,11 @@ function App() {
   return (
     <div className={`raven_webpay_wrapper ${supportedPlatform && 'modal'}`}>
       <div className='modal_wrapper_container'>
-      {!success && <div onClick={() => onModalCancel(true)} className='close_btn'>
-           <figure>{icons.close}</figure>
-        </div>
-        }
+        {!success && (
+          <div onClick={() => onModalCancel(true)} className='close_btn'>
+            <figure>{icons.close}</figure>
+          </div>
+        )}
 
         {!success && (
           <>
@@ -477,21 +470,14 @@ function App() {
                         <p className='business_email'>{config?.email}</p>
                         <span className='payment_amount'>
                           <p>Pay</p>
-                          {has_keys.length > 0 ?
-                          <h5>₦{formatNumWithCommaNaira(String(config?.amount)) }</h5> :
-                          ''}
+                          {has_keys.length > 0 ? <h5>₦{formatNumWithCommaNaira(String(config?.amount))}</h5> : ''}
                         </span>
                       </div>
                       <div onClick={() => setStage('pin')} className='business_logo'>
-                        <figure>
-                        {icons.logo_icon}
-
-                        </figure>
+                        <figure>{icons.logo_icon}</figure>
                         {/* <img src={'https://www.northeastern.edu/graduate/blog/wp-content/uploads/2019/09/iStock-1150384596-2.jpg'} alt='business_logo' /> */}
-
                       </div>
                     </div>
-                  
                   </div>
 
                   {/* Header ends here */}
@@ -500,28 +486,25 @@ function App() {
                   {stage === 'main' && (
                     <div className='payment_method_wrapper'>
                       {/* Display card payment if preffered */}
-                        <div
-                          className={`option_wrapper selected `}
-                        >
-
-                          {/* Card input starts here */}
-                          <div className={`form-group card-input-wrapper ${paymentMethod === 'card' && 'show'}`}>
-                            <div className='input_group card-input'>
-                              <label className='form-label' htmlFor='card-number'>
-                                Card Payment
-                              </label>
-                              <input
-                                placeholder='0000 0000 0000 0000'
-                                pattern='[0-9]'
-                                className='form-input'
-                                name='card-number'
-                                id='card-number'
-                                maxLength='25'
-                                autoComplete='cc-number'
-                                value={cardNumber}
-                                onChange={handleCardNumberChange}
-                              />
-                              <div className={cardType === 'Verve' ? 'card_icon verve_card' : `card_icon` }>
+                      <div className={`option_wrapper selected `}>
+                        {/* Card input starts here */}
+                        <div className={`form-group card-input-wrapper ${paymentMethod === 'card' && 'show'}`}>
+                          <div className='input_group card-input'>
+                            <label className='form-label' htmlFor='card-number'>
+                              Card Payment
+                            </label>
+                            <input
+                              placeholder='0000 0000 0000 0000'
+                              pattern='[0-9]'
+                              className='form-input'
+                              name='card-number'
+                              id='card-number'
+                              maxLength='25'
+                              autoComplete='cc-number'
+                              value={cardNumber}
+                              onChange={handleCardNumberChange}
+                            />
+                            <div className={cardType === 'Verve' ? 'card_icon verve_card' : `card_icon`}>
                               <figure>
                                 {cardType === 'Mastercard'
                                   ? icons.mastercard
@@ -531,314 +514,296 @@ function App() {
                                   ? icons.verve
                                   : ''}
                               </figure>
-                              </div>
                             </div>
-
-                            <div className='grouped-input card-input-end'>
-                              <div className='input_group'>
-                                <label className='form-label' htmlFor='card-number'>
-                                  Expiration date
-                                </label>
-                                <input
-                                  placeholder='MM/YY'
-                                  pattern='[0-9 ]+'
-                                  className='form-input'
-                                  name='exp'
-                                  id='exp'
-                                  maxLength='5'
-                                  autoComplete='cc-exp'
-                                  value={expiryDate}
-                                  onChange={handleExpiryDateChange}
-                                />
-                              </div>
-                              <div className='input_group '>
-                                <div className='form-label' htmlFor='card-number'>
-                                  Security code
-                                  <span style={{zIndex : 500}} className='label-span what-this tooltip-hover-wrap' >Whats this ?
-                                  <RavenToolTip
-                                  text='The CVV/CVC code (Card Verification Value/Code) is located on the back of your credit/debit card on the right side of the white signature strip.'
-                                  color={'black-light'}
-                                  textColor={'white-light'}
-                                  position={'top-left'}> 
-                                  </RavenToolTip>
-
-                                  </span>
-                                </div>
-                                <input
-                                  placeholder='CVV'
-                                  className='form-input'
-                                  name='cvv'
-                                  id='cvv'
-                                  maxLength='3'
-                                  autoComplete='cc-csc'
-                                  value={cvv}
-                                  onChange={handleCvvChange}
-                                />
-                                
-                              </div>
-                            </div>
-                            {cardType === 'Verve' &&
-
-                            <div className='input_group '>
-                            <label className='form-label' htmlFor='card-number'>
-                              Card Pin
-                            </label>
-                            <RavenInputField 
-                            type='pin'
-                            pinFieldNumber={4}
-                            color={'green-light'}
-                            value={pinVal}
-                            onChange={(e) => onPinChange(e)}
-                            />
-                            </div>
-                            
-                            }
-                            
                           </div>
-                          {/* Card input ends here */}
 
-                          {/* Transfer payment option input */}
-                          <div className={`payment_option_container ${paymentMethod === 'transfer' && 'show'}`}>
+                          <div className='grouped-input card-input-end'>
+                            <div className='input_group'>
+                              <label className='form-label' htmlFor='card-number'>
+                                Expiration date
+                              </label>
+                              <input
+                                placeholder='MM/YY'
+                                pattern='[0-9 ]+'
+                                className='form-input'
+                                name='exp'
+                                id='exp'
+                                maxLength='5'
+                                autoComplete='cc-exp'
+                                value={expiryDate}
+                                onChange={handleExpiryDateChange}
+                              />
+                            </div>
+                            <div className='input_group '>
+                              <div className='form-label' htmlFor='card-number'>
+                                Security code
+                                <span style={{ zIndex: 500 }} className='label-span what-this tooltip-hover-wrap'>
+                                  Whats this ?
+                                  <RavenToolTip
+                                    text='The CVV/CVC code (Card Verification Value/Code) is located on the back of your credit/debit card on the right side of the white signature strip.'
+                                    color={'black-light'}
+                                    textColor={'white-light'}
+                                    position={'top-left'}
+                                  ></RavenToolTip>
+                                </span>
+                              </div>
+                              <input
+                                placeholder='CVV'
+                                className='form-input'
+                                name='cvv'
+                                id='cvv'
+                                maxLength='3'
+                                autoComplete='cc-csc'
+                                value={cvv}
+                                onChange={handleCvvChange}
+                              />
+                            </div>
+                          </div>
+                          {cardType === 'Verve' && (
+                            <div className='input_group '>
+                              <label className='form-label' htmlFor='card-number'>
+                                Card Pin
+                              </label>
+                              <RavenInputField
+                                type='pin'
+                                pinFieldNumber={4}
+                                color={'green-light'}
+                                value={pinVal}
+                                onChange={(e) => onPinChange(e)}
+                              />
+                            </div>
+                          )}
+                        </div>
+                        {/* Card input ends here */}
+
+                        {/* Transfer payment option input */}
+                        <div className={`payment_option_container ${paymentMethod === 'transfer' && 'show'}`}>
+                          <div className='payment_details_wrapper'>
+                            <div className='note'>
+                              <b style={{ color: '#EA872D' }}>Bank Transfer:</b> Make a single Transfer to this account
+                              before it expires.
+                            </div>
+
+                            <div className='main_details'>
+                              <span className='bank_name'>{bank?.bank}</span>
+                              <div className='account_number'>
+                                <p>{bank?.account_number}</p>
+                                <figure onClick={() => handleCopy(bank?.account_number)} className='copy_icon'>
+                                  {copied ? <FaCheckCircle /> : icons.copy}
+                                </figure>
+                              </div>
+                              <p className='account_name'>{bank?.account_name}</p>
+                            </div>
+
+                            <div className='expiry_period'>
+                              <figure>{icons.clock}</figure>
+                              <div style={{ display: 'none' }}>
+                                <Countdown countdownTime={840} count={(d) => setCount(d)} />
+                              </div>
+                              <p>
+                                Account Expires in {bankCountDown().min} minutes {bankCountDown().sec} seconds
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        {/* End payment option input */}
+
+                        {/* Raven pay payment option view */}
+                        <div className={`payment_option_container ${paymentMethod === 'raven' && 'show'}`}>
+                          <div className='raven_details_wrapper'>
+                            {!isLoading && (
                               <div className='payment_details_wrapper'>
-                                <div className='note'><b style={{color: '#EA872D'}}>Bank Transfer:</b> Make a single Transfer to this account before it expires.</div>
+                                <div className='note'>
+                                  <b style={{ color: '#EA872D' }}>Raven Pay:</b> Tap to see instructions on how to use
+                                  Raven Pay {icons.warn}
+                                </div>
 
-                                <div className='main_details'>
-                                  <span className='bank_name'>{bank?.bank}</span>
-                                  <div className='account_number'>
-                                    <p>{bank?.account_number}</p>
-                                    <figure onClick={() => handleCopy(bank?.account_number)} className='copy_icon'>
+                                <div className='main_details ravenpay_main_details'>
+                                  <div className='account_number raven_username'>
+                                    <span className='label'>{'Narration'}</span>
+                                    <p>{raven_pay?.raven_pay_ref}</p>
+                                    <figure onClick={() => handleCopy(raven_pay?.raven_pay_ref)} className='copy_icon'>
                                       {copied ? <FaCheckCircle /> : icons.copy}
                                     </figure>
                                   </div>
-                                  <p className='account_name'>{bank?.account_name}</p>
+
+                                  <div className='account_name raven_username'>
+                                    <span className='label'>{'Username'}</span>
+                                    <p>ravenpay</p>
+                                    <figure onClick={() => handleCopy2('ravenpay')}>
+                                      {copy2 ? <FaCheckCircle /> : icons.copy}
+                                    </figure>
+                                  </div>
                                 </div>
 
-                                <div className='expiry_period'>
-                                  <figure>{icons.clock}</figure>
-                                  <div style={{ display: 'none' }}>
-                                    <Countdown countdownTime={840} count={(d) => setCount(d)} />
-                                  </div>
+                                <div style={{ textAlign: 'start' }} className='expiry_period'>
                                   <p>
-                                    Account Expires in {bankCountDown().min} minutes {bankCountDown().sec} seconds
+                                    <b>Note:</b> Make sure you send the exact amount, whilst using the narration
+                                    provided above.
                                   </p>
                                 </div>
                               </div>
-                            </div>
-                            {/* End payment option input */}
-
-                            {/* Raven pay payment option view */}
-                            <div className={`payment_option_container ${paymentMethod === 'raven' && 'show'}`}>
-                              <div className='raven_details_wrapper'>
-                                {!isLoading && (
-                                  <div className='payment_details_wrapper'>
-                                <div className='note'><b style={{color: '#EA872D'}}>Raven Pay:</b> Tap to see instructions on how to use Raven Pay {icons.warn}</div>
-
-                                    <div className='main_details ravenpay_main_details'>
-                                      <div className='account_number raven_username'>
-                                      <span className='label'>{'Narration'}</span>
-                                        <p>{raven_pay?.raven_pay_ref}</p>
-                                        <figure
-                                          onClick={() => handleCopy(raven_pay?.raven_pay_ref)}
-                                          className='copy_icon'
-                                        >
-                                          {copied ? <FaCheckCircle /> : icons.copy}
-                                        </figure>
-                                      </div>
-
-                                      <div className='account_name raven_username'>
-                                      <span className='label'>{'Username'}</span>
-                                        <p>ravenpay</p>
-                                        <figure onClick={() => handleCopy2('ravenpay')}>
-                                          {copy2 ? <FaCheckCircle /> : icons.copy}
-                                        </figure>
-                                      </div>
-                                    </div>
-
-                                    <div style={{ textAlign: 'start' }} className='expiry_period'>
-                                      <p>
-                                        <b>Note:</b> Make sure you send the exact amount, whilst using the narration
-                                        provided above.
-                                      </p>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            {/* end ravenpay view */}
-
-                            {/* qr pay view */}
-                            <div className={`payment_option_container ${paymentMethod === 'qr' && 'show'}`}>
-                                <div className='payment_details_wrapper'>
-                                  <div className='note'>
-                                    Scan the QR code below in your bank mobile app that supports NQR to complete the
-                                    payment.
-                                  </div>
-
-                                  <div className='main_details'>
-                                    <div className='qr_code'>
-                                      <figure>{icons.qr_code}</figure>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            {/* end qr pay view */}
-
-                            {/* ussd pay view */}
-                            <div className={`payment_option_container ${paymentMethod === 'ussd' && 'show'}`}>
-                                <div className='ussd_container'>
-                                  <div style={{marginBottom: '1rem'}}>
-                                  <RavenInputField
-                                    label='Select preffered bank'
-                                    color='light'
-                                    type='select'
-                                    placeholder='Select Bank'
-                                    name='bank'
-                                    onChange={(e) => {
-                                      setussd(e)
-                                      retrieveUssdCode(e?.value)
-                                    }}
-                                    // menuPlacement={'top'}
-                                    style={{ zIndex: '10000', position: 'relative' }}
-                                    selectOption={formatSelectOption(ussd_details?.bank_list)}
-                                    id='bank'
-                                  />
-                                  </div>
-                                
-                                  {ussd && !isUssdLoading && (
-                                    <div className='payment_details_wrapper'>
-                                <div className='note'><b style={{color: '#EA872D'}}>USSD:</b> Copy the USSD code to your keypad and start your transaction</div>
-                                      <div className='main_details'>
-                                        <div className='account_number raven_username'>
-                                        <span className='label'>{'USSD Code'}</span>
-                                          <p>{ussd_code?.ussd_string}</p>
-                                          <figure
-                                            onClick={() => handleCopy(ussd_code?.ussd_string)}
-                                            className='copy_icon'
-                                          >
-                                            {copied ? <FaCheckCircle /> : icons.copy}
-                                          </figure>
-                                        </div>
-                                      </div>
-
-                                      <div style={{ textAlign: 'start' }} className='expiry_period'>
-                                      <p>
-                                      <b>Note:</b> If you have any issues with your transactions <b style={{color: '#0B8376'}}>please contact support.</b> 
-                                      </p>
-                                    </div>
-                                    </div>
-                                  )}
-
-                                  {isUssdLoading && (
-                                    <div className='spinner_contain'>
-                                      <figure className='spinner'>
-                                        <img src={spinner} alt='' />
-                                      </figure>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            {/* end ussd pay view */}
-
-
-                          {/* Payment btn wrap */}
-                          <div className='payment_btn'>
-                            <RavenButton
-                              disabled={
-                                (stage === 'pin' && pinVal.length !== 6) ||
-                                stage === 'confirming-transaction' ||
-                                (stage === 'main' &&
-                                  paymentMethod === 'card' &&
-                                  (cvv.length < 2 || cardNumber.length < 8 || expiryDate.length < 3))
-                              }
-                              loading={loading || isLoading}
-                              label={
-                                stage === 'confirming-transaction'
-                                  ? 'Confirming Transaction'
-                                  : paymentMethod === 'raven' && stage === 'main'
-                                  ? 'I have sent the  money'
-                                  : paymentMethod !== 'transfer' && stage !== 'failed-transaction'
-                                  ? `Pay  ₦${formatNumWithCommaNaira(String(config?.amount))}`
-                                  : stage === 'failed-transaction'
-                                  ? 'Change payment method'
-                                  : 'I have sent the money'
-                              }
-                              color='green-light'
-                              className='pay_btn'
-                              onClick={() => {
-                                success
-                                  ? navigate(callbackUrl)
-                                  : paymentMethod === 'raven' && stage === 'main'
-                                  ? setStage('confirming-transaction')
-                                  : stage === 'main' && paymentMethod === 'card'
-                                  ? initCardPayment()
-                                  : stage === 'main' && paymentMethod === 'transfer'
-                                  ? setStage('confirming-transaction')
-                                  : ''
-                              }}
-                              // size="medium"
-                              width='100%'
-                            />
+                            )}
                           </div>
-                          {/* End Payment btn wrap */}
                         </div>
+                        {/* end ravenpay view */}
+
+                        {/* qr pay view */}
+                        <div className={`payment_option_container ${paymentMethod === 'qr' && 'show'}`}>
+                          <div className='payment_details_wrapper'>
+                            <div className='note'>
+                              Scan the QR code below in your bank mobile app that supports NQR to complete the payment.
+                            </div>
+
+                            <div className='main_details'>
+                              <div className='qr_code'>
+                                <figure>{icons.qr_code}</figure>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* end qr pay view */}
+
+                        {/* ussd pay view */}
+                        <div className={`payment_option_container ${paymentMethod === 'ussd' && 'show'}`}>
+                          <div className='ussd_container'>
+                            <div style={{ marginBottom: '1rem' }}>
+                              <RavenInputField
+                                label='Select preffered bank'
+                                color='light'
+                                type='select'
+                                placeholder='Select Bank'
+                                name='bank'
+                                onChange={(e) => {
+                                  setussd(e)
+                                  retrieveUssdCode(e?.value)
+                                }}
+                                // menuPlacement={'top'}
+                                style={{ zIndex: '10000', position: 'relative' }}
+                                selectOption={formatSelectOption(ussd_details?.bank_list)}
+                                id='bank'
+                              />
+                            </div>
+
+                            {ussd && !isUssdLoading && (
+                              <div className='payment_details_wrapper'>
+                                <div className='note'>
+                                  <b style={{ color: '#EA872D' }}>USSD:</b> Copy the USSD code to your keypad and start
+                                  your transaction
+                                </div>
+                                <div className='main_details'>
+                                  <div className='account_number raven_username'>
+                                    <span className='label'>{'USSD Code'}</span>
+                                    <p>{ussd_code?.ussd_string}</p>
+                                    <figure onClick={() => handleCopy(ussd_code?.ussd_string)} className='copy_icon'>
+                                      {copied ? <FaCheckCircle /> : icons.copy}
+                                    </figure>
+                                  </div>
+                                </div>
+
+                                <div style={{ textAlign: 'start' }} className='expiry_period'>
+                                  <p>
+                                    <b>Note:</b> If you have any issues with your transactions{' '}
+                                    <b style={{ color: '#0B8376' }}>please contact support.</b>
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
+                            {isUssdLoading && (
+                              <div className='spinner_contain'>
+                                <figure className='spinner'>
+                                  <img src={spinner} alt='' />
+                                </figure>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        {/* end ussd pay view */}
+
+                        {/* Payment btn wrap */}
+                        <div className='payment_btn'>
+                          <RavenButton
+                            disabled={
+                              (stage === 'pin' && pinVal.length !== 6) ||
+                              stage === 'confirming-transaction' ||
+                              (stage === 'main' &&
+                                paymentMethod === 'card' &&
+                                (cvv.length < 2 || cardNumber.length < 8 || expiryDate.length < 3))
+                            }
+                            loading={loading || isLoading}
+                            label={
+                              stage === 'confirming-transaction'
+                                ? 'Confirming Transaction'
+                                : paymentMethod === 'raven' && stage === 'main'
+                                ? 'I have sent the  money'
+                                : paymentMethod !== 'transfer' && stage !== 'failed-transaction'
+                                ? `Pay  ₦${formatNumWithCommaNaira(String(config?.amount))}`
+                                : stage === 'failed-transaction'
+                                ? 'Change payment method'
+                                : 'I have sent the money'
+                            }
+                            color='green-light'
+                            className='pay_btn'
+                            onClick={() => {
+                              success
+                                ? navigate(callbackUrl)
+                                : paymentMethod === 'raven' && stage === 'main'
+                                ? setStage('confirming-transaction')
+                                : stage === 'main' && paymentMethod === 'card'
+                                ? initCardPayment()
+                                : stage === 'main' && paymentMethod === 'transfer'
+                                ? setStage('confirming-transaction')
+                                : ''
+                            }}
+                            // size="medium"
+                            width='100%'
+                          />
+                        </div>
+                        {/* End Payment btn wrap */}
+                      </div>
                       {/* Display card payment  */}
 
-                      <div className="payment_select_option">
-                       <p className="select_option_title">
-                        SELECT PAYMENT OPTION
-                       </p>
+                      <div className='payment_select_option'>
+                        <p className='select_option_title'>SELECT PAYMENT OPTION</p>
 
-                       <div className="options_wrapper">
+                        <div className='options_wrapper'>
+                          {prefferedGateway?.includes('card') && paymentMethod !== 'card' && (
+                            <div className='options' onClick={() => setPaymentMethod('card')}>
+                              <figure>{icons.credit_card}</figure>
+                              <p>Card Payment</p>
+                            </div>
+                          )}
 
-                        {prefferedGateway?.includes('card') && paymentMethod !== 'card' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('card')}
-                          >
-                          <figure>{icons.credit_card}</figure>
-                            <p>Card Payment</p>
-                          </div>
-                        )}
+                          {prefferedGateway?.includes('bank_transfer') && paymentMethod !== 'transfer' && (
+                            <div className='options' onClick={() => setPaymentMethod('transfer')}>
+                              <figure>{icons.transfer}</figure>
+                              <p>Bank Transfer</p>
+                            </div>
+                          )}
 
-                        {prefferedGateway?.includes('bank_transfer') && paymentMethod !== 'transfer' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('transfer')}
-                          >
-                          <figure>{icons.transfer}</figure>
-                            <p>Bank Transfer</p>
-                          </div>
-                        )}
+                          {prefferedGateway?.includes('raven') && paymentMethod !== 'raven' && (
+                            <div className='options' onClick={() => setPaymentMethod('raven')}>
+                              <figure>{icons.ravenpay}</figure>
+                              <p>Raven Pay</p>
+                            </div>
+                          )}
 
-                        {prefferedGateway?.includes('raven') && paymentMethod !== 'raven' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('raven')}
-                          >
-                          <figure>{icons.ravenpay}</figure>
-                            <p>Raven Pay</p>
-                          </div>
-                        )}
+                          {prefferedGateway?.includes('qr') && paymentMethod !== 'qr' && (
+                            <div className='options' onClick={() => setPaymentMethod('qr')}>
+                              <figure>{icons.qr}</figure>
+                              <p>NQR Payment</p>
+                            </div>
+                          )}
 
-                        {prefferedGateway?.includes('qr') && paymentMethod !== 'qr' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('qr')}
-                          >
-                          <figure>{icons.qr}</figure>
-                            <p>NQR Payment</p>
-                          </div>
-                        )}
-
-                        {prefferedGateway?.includes('ussd') && paymentMethod !== 'ussd' && (
-                          <div className="options"
-                          onClick={() => setPaymentMethod('ussd')}
-                          >
-                          <figure>{icons.ussd}</figure>
-                            <p>USSD Payment</p>
-                          </div>
-                        )}
-
-                       </div>
+                          {prefferedGateway?.includes('ussd') && paymentMethod !== 'ussd' && (
+                            <div className='options' onClick={() => setPaymentMethod('ussd')}>
+                              <figure>{icons.ussd}</figure>
+                              <p>USSD Payment</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                        
-  
                     </div>
                   )}
                   {/* Payment method ends here */}
@@ -861,8 +826,11 @@ function App() {
                         minutes
                       </div>
 
-                      <div className="contact_support_msg">
-                        <p>If you have any issues with your transactions <b style={{color: '#755AE2'}}>please contact support.</b></p>
+                      <div className='contact_support_msg'>
+                        <p>
+                          If you have any issues with your transactions{' '}
+                          <b style={{ color: '#755AE2' }}>please contact support.</b>
+                        </p>
                       </div>
                     </div>
                   )}
@@ -872,12 +840,12 @@ function App() {
                   {stage === 'pin' && (
                     <div className='pin_session_wrapper'>
                       <div className='method_summary'>
-                        <figure>
-                          {icons.verve}
-                        </figure>
+                        <figure>{icons.verve}</figure>
 
                         <div className='method_details'>
-                          <h6>{paymentMethod === 'card' ? '•••• •••• •••• 6534' : 'Adeeko Emmanuel'} </h6>
+                          <h6>
+                            {paymentMethod === 'card' ? `•••• •••• •••• ${cardNumber.slice(-4)}` : 'Adeeko Emmanuel'}{' '}
+                          </h6>
                           <span>
                             {paymentMethod === 'card' ? (
                               <>
@@ -934,18 +902,15 @@ function App() {
                           {/* count down start */}
 
                           <div>
-
-                          <div className='note pin-note'>
-                        Code expires in{' '}
-                        <Countdown
-                        // count={(e) => setTimeOut(e === "00:00" ? true : false)}
-                        // countDownTime={3000}
-                        />{' '}
-                        minutes
-                      </div>
-                          
-                         </div>
-                  
+                            <div className='note pin-note'>
+                              Code expires in{' '}
+                              <Countdown
+                              // count={(e) => setTimeOut(e === "00:00" ? true : false)}
+                              // countDownTime={3000}
+                              />{' '}
+                              minutes
+                            </div>
+                          </div>
 
                           {/* count down end */}
                         </div>
@@ -953,17 +918,17 @@ function App() {
                       </div>
 
                       {/* Button Action */}
-                      <div className="pin-btn-wrapper">
-                          <RavenButton 
-                          disabled={(stage === 'pin' && pinVal.length !== 6)}
+                      <div className='pin-btn-wrapper'>
+                        <RavenButton
+                          disabled={stage === 'pin' && pinVal.length !== 6}
                           className='pin-btn'
-                          name='card-pin' 
+                          name='card-pin'
                           color={'green-light'}
                           loading={loading}
                           onClick={sendCardToken}
                           label='Confirm PIN'
                           // size={"small"}
-                          />
+                        />
                       </div>
                     </div>
                   )}
@@ -983,7 +948,6 @@ function App() {
                     </div>
                   )}
                   {/* Failed Trans ends here */}
-
                 </div>
               ) : (
                 // end show normal payment modaal
@@ -1019,7 +983,9 @@ function App() {
             <div className='button_wrapper'>
               <RavenButton
                 className='btn-outline-white-light success_btn'
-                onClick={() => {postMessage('onclose', 'transaction_success', config),navigate(callbackUrl)}}
+                onClick={() => {
+                  postMessage('onclose', 'transaction_success', config), navigate(callbackUrl)
+                }}
                 label='Close Payment'
               />
             </div>
@@ -1035,7 +1001,9 @@ function App() {
           bigText={'Cancel Payment'}
           smallText={'Are you sure you want to cancel this payment request, please confirm before proceeding.'}
           btnText={'Close modal'}
-          onClick={() => {postMessage('onclose', 'Payment window closed'), setClosed(true),  navigate(callbackUrl)}}
+          onClick={() => {
+            postMessage('onclose', 'Payment window closed'), setClosed(true), navigate(callbackUrl)
+          }}
           onCancel={() => onModalCancel(false)}
         />
       </RavenModal>

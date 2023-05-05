@@ -6,16 +6,16 @@ import store from './redux/store'
 import './styles/index.css'
 import { RavenToast } from 'raven-bank-ui'
 
-const iframe = document.createElement("div");
-iframe.id = "raven_webpay_wrapper";
-document.body.appendChild(iframe);
+const iframe = document.createElement('div')
+iframe.id = 'raven_webpay_wrapper'
+document.body.appendChild(iframe)
 
 ReactDOM.createRoot(document.getElementById('raven_webpay_wrapper')).render(
-  
   <React.StrictMode>
-  <Provider store={store}>
-    <RavenToast />
-    <App />
-  </Provider>,
-</React.StrictMode>,
+    <Provider store={store}>
+      <RavenToast />
+      <App />
+    </Provider>
+    ,
+  </React.StrictMode>,
 )
