@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import './styles/modal.css'
@@ -5,13 +6,12 @@ import './styles/index.css'
 
 // import shell from './assets/shell.png'
 import { icons } from './assets/icons'
-import { RavenButton, RavenInputField, RavenModal, RavenToolTip } from 'raven-bank-ui'
+import { RavenButton, RavenInputField, RavenModal, RavenToolTip, toast } from 'raven-bank-ui'
 import spinner from './assets/spinner.png'
 // import logo_icon from './assets/logo_icon.svg'
 import 'raven-bank-ui/dist/esm/styles/index.css'
 import ReactPinField from 'react-pin-field'
 import limitless from './assets/limitless.png'
-import mCard from './assets/mastercard.png'
 import Countdown from './helpers/coutdown'
 import ErrorModal from './modal/ErrorModal'
 import { FaCheckCircle } from '../node_modules/react-icons/fa/index.esm'
@@ -38,9 +38,6 @@ function App() {
   function postMessage(type, message) {
     window.parent.postMessage({ type: type, message: message }, '*')
   }
-
-  //custom javascript sleep function
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
   let int
   // retrieve redux states
@@ -75,6 +72,7 @@ function App() {
   // const [moreOptions, setMoreOptions] = useState(prefferedGateway?.length > 4 ? false : true)
   const [stage, setStage] = useState('main')
   const [pinVal, onPinChange] = useState('')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pin, onComplete] = useState('')
   const [errorModal, onModalCancel] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -91,6 +89,7 @@ function App() {
   const [cardType, setCardType] = useState(null)
   const [inlineRef, setInlineRef] = useState(null)
   const [closed, setClosed] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [mode, setMode] = useState(null)
   const [cardUserRef, setCardUserRef] = useState(null)
 
@@ -195,9 +194,11 @@ function App() {
       }),
     )
 
-    if (response.payload.status === 'success') {
+    if (response?.payload?.status === 'success') {
       setStage('confirming-transaction')
       checkCardTrxStatus(card_ref)
+    } else {
+      toast.error('Something went wrong, please try again')
     }
   }
 
@@ -245,6 +246,7 @@ function App() {
       } else setStage('pin')
     } else {
       setIsLoading(false)
+      if ('response' in response.payload) toast.error('Something went wrong, pls try again later')
     }
   }
 
@@ -473,7 +475,7 @@ function App() {
                           {has_keys.length > 0 ? <h5>₦{formatNumWithCommaNaira(String(config?.amount))}</h5> : ''}
                         </span>
                       </div>
-                      <div onClick={() => setStage('pin')} className='business_logo'>
+                      <div onClick={() => setStage('verve-pin')} className='business_logo'>
                         <figure>{icons.logo_icon}</figure>
                         {/* <img src={'https://www.northeastern.edu/graduate/blog/wp-content/uploads/2019/09/iStock-1150384596-2.jpg'} alt='business_logo' /> */}
                       </div>
@@ -504,7 +506,7 @@ function App() {
                               value={cardNumber}
                               onChange={handleCardNumberChange}
                             />
-                            <div className={cardType === 'Verve' ? 'card_icon verve_card' : `card_icon`}>
+                            <div className={cardType === 'Verve' ? 'card_icon ' : `card_icon`}>
                               <figure>
                                 {cardType === 'Mastercard'
                                   ? icons.mastercard
@@ -543,8 +545,7 @@ function App() {
                                     text='The CVV/CVC code (Card Verification Value/Code) is located on the back of your credit/debit card on the right side of the white signature strip.'
                                     color={'black-light'}
                                     textColor={'white-light'}
-                                    position={'top-left'}
-                                  ></RavenToolTip>
+                                    position={'top-left'}></RavenToolTip>
                                 </span>
                               </div>
                               <input
@@ -559,20 +560,6 @@ function App() {
                               />
                             </div>
                           </div>
-                          {cardType === 'Verve' && (
-                            <div className='input_group '>
-                              <label className='form-label' htmlFor='card-number'>
-                                Card Pin
-                              </label>
-                              <RavenInputField
-                                type='pin'
-                                pinFieldNumber={4}
-                                color={'green-light'}
-                                value={pinVal}
-                                onChange={(e) => onPinChange(e)}
-                              />
-                            </div>
-                          )}
                         </div>
                         {/* Card input ends here */}
 
@@ -750,6 +737,8 @@ function App() {
                                 ? navigate(callbackUrl)
                                 : paymentMethod === 'raven' && stage === 'main'
                                 ? setStage('confirming-transaction')
+                                : stage === 'main' && paymentMethod === 'card' && cardType === 'Verve'
+                                ? setStage('verve-pin')
                                 : stage === 'main' && paymentMethod === 'card'
                                 ? initCardPayment()
                                 : stage === 'main' && paymentMethod === 'transfer'
@@ -836,6 +825,92 @@ function App() {
                   )}
                   {/* Confirming Transfer starts here */}
 
+                  {/* start the verve user pin stage */}
+                  {stage === 'verve-pin' && (
+                    <div className='pin_session_wrapper'>
+                      <div className='method_summary'>
+                        <figure>{icons.verve}</figure>
+
+                        <div className='method_details'>
+                          <h6>
+                            {paymentMethod === 'card' ? `•••• •••• •••• ${cardNumber.slice(-4)}` : 'Adeeko Emmanuel'}{' '}
+                          </h6>
+                          <span>
+                            {paymentMethod === 'card' ? (
+                              <>
+                                <p>Expiry date: 02/24</p>
+                                <p>CVV: ***</p>
+                              </>
+                            ) : (
+                              <p>
+                                Raven Bank • <b>@teeymix</b>
+                              </p>
+                            )}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className='otp_info'>
+                        <p>ENTER YOUR FOUR DIGIT VERVE PIN, SAME AS THE ONE YOU USE IN ATM`s & POS.</p>
+                      </div>
+
+                      {/* OTP starts here */}
+
+                      <div
+                        // style={style}
+                        className={`form-group form-group__black-light`}>
+                        <label htmlFor='' className='form-label'>
+                          {'Enter Card Pin'}{' '}
+                        </label>
+                        {/* pin group start */}
+                        <div className={`pin-group pin-group_black-light`}>
+                          <div
+                            style={{ gridTemplateColumns: `repeat(4, 1fr)` }}
+                            className={`pin_field_group verve-pin`}>
+                            <RavenInputField
+                              type='pin'
+                              pinFieldNumber={4}
+                              color={'green-light'}
+                              value={pinVal}
+                              onChange={(e) => onPinChange(e)}
+                            />
+                          </div>
+
+                          {/* count down start */}
+                          {/* 
+                          <div>
+                            <div className='note pin-note'>
+                              Code expires in{' '}
+                              <Countdown
+                              // count={(e) => setTimeOut(e === "00:00" ? true : false)}
+                              // countDownTime={3000}
+                              />{' '}
+                              minutes
+                            </div>
+                          </div> */}
+
+                          {/* count down end */}
+                        </div>
+                        {/* pin group end */}
+                      </div>
+
+                      {/* Button Action */}
+                      <div className='pin-btn-wrapper'>
+                        <RavenButton
+                          disabled={stage === 'verve-pin' && pinVal.length !== 4}
+                          className='pin-btn'
+                          name='card-pin'
+                          color={'green-light'}
+                          loading={loading}
+                          onClick={initCardPayment}
+                          label='Proceed'
+                          // size={"small"}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {/* end verve user pin stage */}
+
                   {/* start the pin stage */}
                   {stage === 'pin' && (
                     <div className='pin_session_wrapper'>
@@ -871,8 +946,7 @@ function App() {
                       {/* OTP starts here */}
                       <div
                         // style={style}
-                        className={`form-group form-group__black-light`}
-                      >
+                        className={`form-group form-group__black-light`}>
                         <label htmlFor='' className='form-label'>
                           {'Enter Security Code'}{' '}
                         </label>
