@@ -936,6 +936,9 @@
   letter-spacing: -0.01em;
   color: #333333;
 }
+.raven_webpay_wrapper .verve-pin-wrapper {
+  width: 37rem;
+}
 .raven_webpay_wrapper .spinner_contain {
   display: flex;
   align-items: center;
@@ -984,4 +987,12 @@
   .modal_wrapper_container {
     width: 40rem !important;
   }
+}
+.verve-pin {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 2rem;
+}
+.verve-pin > input {
+  height: 6.5rem;
 }/*# sourceMappingURL=modal.css.map */

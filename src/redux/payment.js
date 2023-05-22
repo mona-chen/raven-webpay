@@ -34,10 +34,6 @@ export const initiateCardTransaction = createAsyncThunk('/get_payment_config', a
   try {
     const data = await api.post('/webpay/web/initiate_card_transaction', payload)
 
-    console.log('fdfdf')
-    if ('response' in data) {
-      alert(data.response)
-    }
     if (data?.data?.status === 'success') {
       // await thunkAPI.dispatch(setConfig(data?.data?.data));
       await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
@@ -46,6 +42,7 @@ export const initiateCardTransaction = createAsyncThunk('/get_payment_config', a
     }
     return data?.data
   } catch (error) {
+    toast.error('Error initializing payment, please try again later')
     console.log(error)
   }
 })
