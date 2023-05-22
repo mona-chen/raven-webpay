@@ -161,8 +161,7 @@ function App() {
   // end window object
 
   // get transaction ref from url
-  const ref = window.location.search
-  let trx = inlineRef ? inlineRef : ref.split('=')[1]
+  let trx = params.get('ref')
 
   const userRef = generateReference()
   // end transaction ref getter
@@ -193,7 +192,6 @@ function App() {
         token: pinVal,
       }),
     )
-
     if (response?.payload?.status === 'success') {
       setStage('confirming-transaction')
       checkCardTrxStatus(card_ref)
@@ -283,7 +281,6 @@ function App() {
       cardint = setInterval(
         async (card_ref) => {
           let call = await dispatch(verifyCardTrx(card_ref))
-          // console.log(card_ref, ":Pay Ref within useCallback")
 
           if (call?.payload?.data?.status === 'successful') {
             getConfig()
@@ -452,7 +449,7 @@ function App() {
 
   return (
     <div className={`raven_webpay_wrapper ${supportedPlatform && 'modal'}`}>
-      <div className='modal_wrapper_container'>
+      <div className={`modal_wrapper_container ${stage === 'verve-pin' && 'verve-pin-wrapper'} `}>
         {!success && (
           <div onClick={() => onModalCancel(true)} className='close_btn'>
             <figure>{icons.close}</figure>
@@ -850,18 +847,11 @@ function App() {
                         </div>
                       </div>
 
-                      <div className='otp_info'>
-                        <p>ENTER YOUR FOUR DIGIT VERVE PIN, SAME AS THE ONE YOU USE IN ATM`s & POS.</p>
-                      </div>
-
                       {/* OTP starts here */}
 
                       <div
                         // style={style}
                         className={`form-group form-group__black-light`}>
-                        <label htmlFor='' className='form-label'>
-                          {'Enter Card Pin'}{' '}
-                        </label>
                         {/* pin group start */}
                         <div className={`pin-group pin-group_black-light`}>
                           <div
@@ -869,11 +859,32 @@ function App() {
                             className={`pin_field_group verve-pin`}>
                             <RavenInputField
                               type='pin'
+                              label={'Enter Card Pin'}
+                              // className={'tooltip-hover-wrap'}
                               pinFieldNumber={4}
                               color={'green-light'}
+                              labelSpanText={
+                                <span
+                                  style={{ zIndex: 500 }}
+                                  className='label-span text-purple-light tooltip-hover-wrap'>
+                                  What this?
+                                  <RavenToolTip
+                                    text='Enter Your Four Digit Verve PIN, Same As The One You Use In ATM`s & POS.'
+                                    color={'black-light'}
+                                    textColor={'white-light'}
+                                    position={'top-left'}></RavenToolTip>
+                                </span>
+                              }
+                              labelColor={'purple-light '}
+                              // labelClassName={'tooltip-hover-wrap'}
                               value={pinVal}
-                              onChange={(e) => onPinChange(e)}
-                            />
+                              onChange={(e) => onPinChange(e)}>
+                              <RavenToolTip
+                                text='The CVV/CVC code (Card Verification Value/Code) is located on the back of your credit/debit card on the right side of the white signature strip.'
+                                color={'black-light'}
+                                textColor={'white-light'}
+                                position={'top-left'}></RavenToolTip>
+                            </RavenInputField>
                           </div>
 
                           {/* count down start */}
