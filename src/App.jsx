@@ -1069,7 +1069,7 @@ function App() {
               <RavenButton
                 className='btn-outline-white-light success_btn'
                 onClick={() => {
-                  postMessage('onclose', 'transaction_success', config), navigate(callbackUrl)
+                  postMessage('onClose', 'transaction_success', config), navigate(callbackUrl)
                 }}
                 label='Close Payment'
               />
@@ -1087,7 +1087,7 @@ function App() {
           smallText={'Are you sure you want to cancel this payment request, please confirm before proceeding.'}
           btnText={'Close modal'}
           onClick={() => {
-            postMessage('onclose', 'Payment window closed'), setClosed(true), navigate(callbackUrl)
+            postMessage('onClose', 'Payment window closed'), setClosed(true), navigate(callbackUrl)
           }}
           onCancel={() => onModalCancel(false)}
         />
