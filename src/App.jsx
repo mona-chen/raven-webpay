@@ -375,8 +375,13 @@ function App() {
   // effect call for cross-platform communication
   useEffect(() => {
     if (success === true) {
-      // console.log("Success:", config);
-      postMessage('onSuccess', config)
+      getConfig()
+
+      // console.log(config, 'onSuccess')
+      //delay for 1s before sending success message
+      setTimeout(() => {
+        postMessage('onSuccess', config)
+      }, [1000])
     }
   }, [success])
 
