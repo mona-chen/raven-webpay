@@ -1074,7 +1074,7 @@ function App() {
               <RavenButton
                 className='btn-outline-white-light success_btn'
                 onClick={() => {
-                  postMessage('onClose', `transaction_success: ${config}`, config), navigate(callbackUrl)
+                  postMessage('onClose', { transaction_success: true, data: config }, config), navigate(callbackUrl)
                 }}
                 label='Close Payment'
               />
