@@ -471,7 +471,7 @@ function App() {
                   <div className='header_main_container'>
                     <div className='header'>
                       <div className='header_details'>
-                        <p className='business_email'>{config?.email}</p>
+                        <p className='business_email'>{config?.customer_email || config?.email || '--'}</p>
                         <span className='payment_amount'>
                           <p>Pay</p>
                           {has_keys.length > 0 ? <h5>₦{formatNumWithCommaNaira(String(config?.amount))}</h5> : ''}
