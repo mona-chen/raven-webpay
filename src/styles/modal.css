@@ -86,10 +86,10 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .success_wrapper .button_wrapper .success_btn {
   width: 100%;
-  border: 0.928172px solid #CCCCCC !important;
+  border: 0.928172px solid #cccccc !important;
 }
 .raven_webpay_wrapper .modal_wrapper_container .selected {
-  background: #FBFBFB;
+  background: #fbfbfb;
   transition: background 0.3s ease;
 }
 .raven_webpay_wrapper .modal_wrapper_container .selected .option_title_contain .option p {
@@ -123,7 +123,7 @@
   height: max-content;
   display: flex;
   flex-direction: column;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 8px;
   /* ==> input styling begins <== */
   /* ==> input styling begins <== */
@@ -154,7 +154,7 @@
   cursor: pointer;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .form-group .form-label .what-this {
-  color: #0B8376;
+  color: #0b8376;
   font-size: 0.8rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .form-group .grouped-input {
@@ -171,7 +171,7 @@
   position: relative;
   display: inline-block;
   border-radius: 0.8rem;
-  border: 0.1rem solid #CCCCCC;
+  border: 0.1rem solid #cccccc;
   font-size: 1.4rem;
   color: #020202;
   position: relative;
@@ -320,7 +320,7 @@
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #E5E6E6;
+  border-bottom: 1px solid #e5e6e6;
   width: 100%;
   padding: 0 2rem;
 }
@@ -379,7 +379,7 @@
   font-weight: 500;
   font-size: 1.2rem;
   letter-spacing: -0.03em;
-  color: #CCCCCC;
+  color: #cccccc;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .header_main_container .header .header_details .payment_amount h5 {
   font-weight: 900;
@@ -427,7 +427,7 @@
   padding: 1rem 2rem;
   flex-direction: column;
   transition: background 0.3s ease;
-  border-bottom: 1px solid #E5E6E6;
+  border-bottom: 1px solid #e5e6e6;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper .option_title_contain {
   display: flex;
@@ -440,7 +440,7 @@
   transition: all 300ms ease-in-out;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper:hover:hover .option_icon figure {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 18px 17px rgba(229, 230, 230, 0.4);
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper:hover p {
@@ -470,14 +470,14 @@
   height: 3rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper .option_icon.selected figure {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 18px 17px rgba(229, 230, 230, 0.4);
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper .option_icon figure {
   width: 100%;
   height: 100%;
-  background: #FBFBFB;
-  border: 1px solid #E5E6E6;
+  background: #fbfbfb;
+  border: 1px solid #e5e6e6;
   border-radius: 4px;
   display: grid;
   place-items: center;
@@ -490,16 +490,19 @@
   width: 3rem;
   height: 3rem;
   position: absolute;
-  background: #FBFBFB;
+  background: #fbfbfb;
   transition: background 0.3s ease;
   right: 2%;
   top: 29.2%;
   z-index: 5;
 }
+.raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper .card_icon.blusalt-card {
+  top: 20%;
+}
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_method_wrapper .option_wrapper .card_icon figure {
   width: 100%;
   height: 100%;
-  background: #FBFBFB;
+  background: #fbfbfb;
   border-radius: 4px;
   display: grid;
   place-items: center;
@@ -530,7 +533,7 @@
   -moz-transition: max-height 0.5s;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 4px 22px rgba(208, 213, 221, 0.25);
   border-radius: 1.6rem;
   display: flex;
@@ -542,7 +545,7 @@
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .note {
   display: flex;
   gap: 0.5rem;
-  background: #FFF6ED;
+  background: #fff6ed;
   border-radius: 100px;
   font-size: 1rem;
   font-weight: 400;
@@ -567,8 +570,8 @@
   align-items: start;
   gap: 0.5rem;
   padding: 1rem 0;
-  border-top: 0.8px solid #E5E6E6;
-  border-bottom: 0.8px solid #E5E6E6;
+  border-top: 0.8px solid #e5e6e6;
+  border-bottom: 0.8px solid #e5e6e6;
   width: 100%;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .bank_name {
@@ -618,13 +621,13 @@
   margin-right: 0.5rem;
   font-size: 1.4rem;
   font-weight: 700;
-  color: #0B8376;
+  color: #0b8376;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .payment_option_container .payment_details_wrapper .main_details .raven_username svg {
   display: grid;
   place-items: center;
   cursor: pointer;
-  color: #0B8376;
+  color: #0b8376;
   width: 1.2rem !important;
   height: 1.2rem !important;
 }
@@ -699,11 +702,11 @@
   font-size: 1.2rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .raven_details_wrapper .verify {
-  color: #0B8376;
+  color: #0b8376;
   font-weight: 700;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .raven_details_wrapper .verified_name {
-  background: #FFF6ED;
+  background: #fff6ed;
   border-radius: 100px;
   font-size: 1rem;
   font-weight: 600;
@@ -711,7 +714,7 @@
   padding: 0.8rem 2rem;
   width: -moz-max-content;
   width: max-content;
-  color: #EA872D;
+  color: #ea872d;
   margin-top: 2rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .modal_wrapper .ussd_container {
@@ -732,15 +735,15 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .pin_session_wrapper {
   width: 100%;
-  background: #FBFBFB;
+  background: #fbfbfb;
   padding: 3rem;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #E5E6E6;
+  border-bottom: 1px solid #e5e6e6;
   align-items: center;
 }
 .raven_webpay_wrapper .modal_wrapper_container .pin_session_wrapper .method_summary {
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(208, 213, 221, 0.79);
   border-radius: 1.6rem;
   padding: 1.2rem;
@@ -809,11 +812,11 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .failed_transaction_wrapper {
   width: 100%;
-  background: #FBFBFB;
+  background: #fbfbfb;
   padding: 6rem 3rem;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #E5E6E6;
+  border-bottom: 1px solid #e5e6e6;
   justify-content: center;
   align-items: center;
 }
@@ -852,11 +855,11 @@
 }
 .raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper {
   width: 100%;
-  background: #FBFBFB;
+  background: #fbfbfb;
   padding-top: 3rem;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #E5E6E6;
+  border-bottom: 1px solid #e5e6e6;
   justify-content: center;
   align-items: center;
 }
@@ -866,7 +869,7 @@
   margin-bottom: 2rem;
 }
 .raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper .note {
-  background: #FFF6ED;
+  background: #fff6ed;
   border-radius: 100px;
   font-size: 1rem;
   font-weight: 400;
@@ -874,13 +877,13 @@
   width: fit-content;
   text-align: center;
   padding: 0.8rem 2rem;
-  color: #EA872D;
+  color: #ea872d;
 }
 .raven_webpay_wrapper .modal_wrapper_container .confirming_transfer_wrapper .contact_support_msg {
   display: flex;
   width: 100%;
   margin-top: 3rem;
-  border-top: 0.8px solid #E5E6E6;
+  border-top: 0.8px solid #e5e6e6;
   padding: 2rem 0;
   align-items: center;
 }
@@ -916,7 +919,7 @@
   padding: 1.5rem 2rem;
   display: flex;
   gap: 1rem;
-  background: #F7F8F7;
+  background: #f7f8f7;
   border-radius: 0.8rem;
   align-items: center;
   cursor: pointer;
@@ -995,4 +998,13 @@
 }
 .verve-pin > input {
   height: 6.5rem;
+}
+
+.blusalt-modal {
+  width: 100vw;
+  height: 100vh;
+  display: fixed;
+  position: relative;
+  right: 0;
+  top: 0;
 }/*# sourceMappingURL=modal.css.map */

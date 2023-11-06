@@ -47,9 +47,41 @@ export const initiateCardTransaction = createAsyncThunk('/get_payment_config', a
   }
 })
 
+export const initiateCardTransactionTwo = createAsyncThunk('/get_payment_config', async (payload, thunkAPI) => {
+  try {
+    const data = await api.post('/webpay/web/initiate_card_transaction2', payload)
+
+    if (data?.data?.status === 'success') {
+      // await thunkAPI.dispatch(setConfig(data?.data?.data));
+      await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
+    } else {
+      toast.error('Unable to initiate card transaction, please try again')
+    }
+    return data?.data
+  } catch (error) {
+    toast.error('Error initializing payment, please try again later')
+    console.log(error)
+  }
+})
+
 export const processCardToken = createAsyncThunk('/init_3ds_transaction', async (payload, _thunkAPI) => {
   try {
     const data = await api.post('/webpay/web/verify_card_token', payload)
+
+    if (data?.data?.status === 'success') {
+      // await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
+    } else {
+      toast.error("We couldn't process your token, token is expired or invalid")
+    }
+    return data?.data
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+export const processBlusaltCardToken = createAsyncThunk('/init_3ds_transaction', async (payload, _thunkAPI) => {
+  try {
+    const data = await api.post('/webpay/web/complete_auth_capture', payload)
 
     if (data?.data?.status === 'success') {
       // await thunkAPI.dispatch(setCardRef(data?.data?.data?.payment_reference))
@@ -262,6 +294,18 @@ export const payment = createSlice({
       state.isAuth = false
       state = null
     },
+    [initiateCardTransactionTwo.pending]: (state) => {
+      state.loading = true
+    },
+    [initiateCardTransactionTwo.fulfilled]: (state) => {
+      state.loading = false
+    },
+    [initiateCardTransactionTwo.rejected]: (state) => {
+      // localStorage.removeItem("token");
+      state.loading = false
+      state.isAuth = false
+      state = null
+    },
 
     [getBankAccount.pending]: (state) => {
       state.loading = true
@@ -296,6 +340,18 @@ export const payment = createSlice({
       state.loading = false
     },
     [processCardToken.rejected]: (state) => {
+      // localStorage.removeItem("token");
+      state.loading = false
+      state.isAuth = false
+      state = null
+    },
+    [processBlusaltCardToken.pending]: (state) => {
+      state.loading = true
+    },
+    [processBlusaltCardToken.fulfilled]: (state) => {
+      state.loading = false
+    },
+    [processBlusaltCardToken.rejected]: (state) => {
       // localStorage.removeItem("token");
       state.loading = false
       state.isAuth = false
