@@ -164,4 +164,7 @@ body::-webkit-scrollbar {
     transform: translateY(0%);
     opacity: 1;
   }
+}
+input:focus {
+  font-size: 16px;
 }/*# sourceMappingURL=index.css.map */
